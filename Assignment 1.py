@@ -19,51 +19,43 @@ new_data.info()
 
 
 #%% Exercise 1
-new_data_1 = new_data[['date', 'name', 'volume', 'close']]
+new_data_1 = new_data[['date', 'name', 'volume']]
 
 # Use to print out nicely :D
 new_data_median_sorted = new_data_1.groupby("name").agg({"volume": ["median"]}).sort_values(by=("volume", "median"), ascending=False)
 print(new_data_median_sorted)
 crypto_curr = new_data_median_sorted.head(50)
 print(crypto_curr)
-
 # 2017-06-01 - 2018-01-01 (Close values)
+
 #%% Exercise 2
 
 random.seed(42069)
 
-pd_data = new_data[['date','name', 'close']] # Filter
+pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
 
-# Choose a random date
+# Choosing a random date
 unique_days = pd_data["date"].unique() # filter unique days in data
 n_unique_days = len(unique_days) # count unique days
-print(n_unique_days)
 
-n_randdom_day = random.randint(0,n_unique_days)
+n_randdom_day = random.randint(0,n_unique_days-1) # Select random entry number
 unique_day = unique_days[n_randdom_day] # get entry
-print(n_randdom_day)
-print(unique_day)
 
-is_date = pd_data['date']==unique_day
-pd_data = pd_data[is_date]
-print(pd_data)
+is_date = pd_data['date']==unique_day # create filtering list
+pd_data = pd_data[is_date] # Filter data by date
 #r_d_pd_data = pd_data["date" == unique_day] # filter by random day
 
 
 # Choose a random N of cryptos
+top_currencies = crypto_curr.index.values # top 50 curencies
+random_top_curr = set(random.choices(top_currencies, k=random.randint(1,50))) # Select random number of currensies
 
 
 
 
 
-
-
-
-
-
-
-n.randdom.day = random.randint(0,n.unique_days)
-unique_day = unique_days[n.randdom.day] # get entry
+#n.randdom.day = random.randint(0,n.unique_days)
+#unique_day = unique_days[n.randdom.day] # get entry
 
 
 
