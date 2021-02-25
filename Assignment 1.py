@@ -6,6 +6,7 @@ import pandas as pd
 import scipy.stats as scs
 # from pylab import mpl, plt
 import random
+import os
 from matplotlib.pylab import mpl, plt
 
 #%% Read data into code
