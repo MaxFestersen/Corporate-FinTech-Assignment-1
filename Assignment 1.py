@@ -62,7 +62,13 @@ random_top_curr = set(random.choices(top_currencies, k=random.randint(1,50))) # 
 #new_data_median_sorted.
 
 #len
-pd_data = pd_data.pivot_table(index = pd_data.index, columns = 'name', values = 'close')
-log_ret = np.log(pd_data/pd_data.shift(1))
-log_ret = log_ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all')
+#pd_data = pd_data.pivot_table(index = pd_data.index, columns = 'name', values = 'close')
+#log_ret = np.log(pd_data/pd_data.shift(1))
+#log_ret = log_ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all')
 
+data_cmc = pd.read_csv('crypto-markets.csv')
+data_cmc['date'] = pd.to_datetime(data_cmc['date'])
+data_cmc.index = pd.DatetimeIndex(data_cmc['date'])
+symbol = 'bitcoin'
+data_symbol = pd.DataFrame(data_cmc['close'].loc[data_cmc['name'] == symbol])
+print(data_symbol)
