@@ -85,10 +85,28 @@ ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all')
 
 plt.plot(ret)
 
-print(sum(weigth))
+ret_data = pd_data_1.pct_change()[1:]
+print(ret_data.head())
 
+weighted_returns = (weigth * ret_data)
+print(weighted_returns)
 
+port_ret = weighted_returns.sum(axis = 1)
+print(port_ret)
 
+overall_sum_port = np.sum(port_ret)
+print(overall_sum_port)
+
+ret.cov()
+'''
+fig = plt.figure()
+ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
+ax1.hist(port_ret, bins = 60)
+ax1.set_xlabel('Portfolio returns')
+ax1.set_ylabel("Freq")
+ax1.set_title("Portfolio Returns calculated manually")
+plt.show();
+'''
 #n.randdom.day = random.randint(0,n.unique_days)
 #unique_day = unique_days[n.randdom.day] # get entry
 
