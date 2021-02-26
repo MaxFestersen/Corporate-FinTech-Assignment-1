@@ -97,11 +97,11 @@ ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Or here?
 
 #plt.plot(ret)
 
-# portfolio return, portfolio volatility, and Sharpe ratio
+# Portfolio return, Portfolio volatility, and Sharpe ratio
+# Portfolio return (for holding period)
 ret_data = pd_data_1.pct_change()[1:]
 #print(ret_data.head())
 
-# portfolio return (for holding period)
 weighted_returns = (weigth * ret_data)
 #print(weighted_returns)
 
@@ -113,7 +113,11 @@ overall_sum_port = np.sum(port_ret)
 
 # Add to array (for ex2 c and ex2 d)
 results["portfolio_return"] = overall_sum_port
+
+# Portfolio volatility (for holding period)
 #results["portfolio_volatility"] = y
+
+# Sharpe ratio (for holding period)
 #results["sharpe_ratio"] = z
 
 # What is this..?
