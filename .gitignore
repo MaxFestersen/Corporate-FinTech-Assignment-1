@@ -10,3 +10,5 @@ venv/
 *.iml
 *.iml
 *.xml
+*.xml
+.idea/misc.xml
