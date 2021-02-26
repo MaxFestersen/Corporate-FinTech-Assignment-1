@@ -7,7 +7,7 @@ import scipy.stats as scs
 # from pylab import mpl, plt
 import random
 from matplotlib.pylab import mpl, plt
-import datetime
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 #%% Read data into code
@@ -77,7 +77,15 @@ curr_in = pd_data['name'].isin(random_top_curr) # Create filter list by random t
 pd_data = pd_data[curr_in] # Apply filter list
 
 #%% Exercise 2.2 b
-n = 1/weigth_random_top_curr
+weigth = 1/weigth_random_top_curr # calculate 1/N weights
+
+pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close')
+ret = pd_data_1/pd_data_1.shift(1)
+ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all')
+
+plt.plot(ret)
+
+print(sum(weigth))
 
 
 
@@ -89,9 +97,7 @@ n = 1/weigth_random_top_curr
 #new_data_median_sorted.
 
 #len
-#pd_data = pd_data.pivot_table(index = pd_data.index, columns = 'name', values = 'close')
-#log_ret = np.log(pd_data/pd_data.shift(1))
-#log_ret = log_ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all')
+
 
 data_cmc = pd.read_csv('crypto-markets.csv')
 data_cmc['date'] = pd.to_datetime(data_cmc['date'])
