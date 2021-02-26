@@ -126,5 +126,5 @@ plt.show();
 
 
 #%% Exercise 2.c
-#for i in range(0,10000):
+#for i in range(1,10000):
 #    results[] = results{i = i, portfolio_return = x, portfolio_volatility = y, Sharpe ratio=z}
