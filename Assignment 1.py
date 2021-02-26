@@ -27,11 +27,13 @@ print("See external file LINK")
 #%% Exercise 2 preperation
 random.seed(42069)
 results = { # generate dictionary to carry information for each iteration
-    "i" : [],
+    "i" : [], # Iteration
+    "N": [], # Number of cryptos
     "portfolio_return" : [],
     "portfolio_volatility" : [],
     "sharpe_ratio" : []
 }
+results["i"] = 0 # First result is created outside of loop
 
 
 #%% Exercise 2.1
@@ -71,6 +73,7 @@ for n in range(random.randint(0,49)): # Randomly run from 0 to 49 times (so at l
     random_top_curr = np.delete(random_top_curr, random.randint(0,len(random_top_curr)-1), 0) # remove a random value
 
 weigth_random_top_curr = len(random_top_curr) # Amount of currencsies
+results["N"] = weigth_random_top_curr
 print("There are ", weigth_random_top_curr, " currencies.\nThe random top currencies are:")
 random_top_curr
 
@@ -109,7 +112,6 @@ overall_sum_port = np.sum(port_ret)
 #print(overall_sum_port)
 
 # Add to array (for ex2 c and ex2 d)
-results["i"] = 0
 results["portfolio_return"] = overall_sum_port
 #results["portfolio_volatility"] = y
 #results["sharpe_ratio"] = z
