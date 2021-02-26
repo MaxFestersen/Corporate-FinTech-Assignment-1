@@ -193,5 +193,6 @@ for i in range(1,10000):
     # Sharpe ratio (for holding period)
     # results["sharpe_ratio"] = z
 
-# %% Excersice 2.d
-#plt.plot(results["N"], results["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
+#%% Excersice 2.d
+#ex2 = plt.plot(results["N"], results["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
+
