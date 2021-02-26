@@ -87,19 +87,20 @@ pd_data = pd_data[curr_in] # Apply filter list
 
 #%% Exercise 2.2 b
 weigth = 1/weigth_random_top_curr # calculate 1/N weights
-
+weight_array = np.full((1, weigth_random_top_curr), weigth)
+print(weight_array)
 pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close') # Set names as columns, close as values with date as index
-ret = pd_data_1/pd_data_1.shift(1) # whaaaatttt is hapening here?
+ret = pd_data_1/pd_data_1.shift(1) # Calculate return of different stocks
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Or here?
-
+ret
 #plt.plot(ret)
 
 # portfolio return, portfolio volatility, and Sharpe ratio
-ret_data = pd_data_1.pct_change()[1:]
+ret_data = pd_data_1.pct_change()[1:] # Calculate the procentage change in the prices pr. day
 #print(ret_data.head())
 
 # portfolio return (for holding period)
-weighted_returns = (weigth * ret_data)
+weighted_returns = (weigth * ret_data) # Return times the weight
 #print(weighted_returns)
 
 port_ret = weighted_returns.sum(axis = 1)
@@ -115,7 +116,28 @@ results["portfolio_return"] = overall_sum_port
 #results["sharpe_ratio"] = z
 
 # What is this..?
-ret.cov()
+ret.mean() * 126
+ret.cov() # Calculate covariance matrix for stocks
+
+np.sum(ret.mean() * weight_array) * 126
+np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array))
+math.sqrt(np.dot(weight_array.T, np.dot(ret.cov() * 126, weigth_array )))
+def port_ret(weight):
+    return np.sum(ret.mean() * weigth) * 126
+
+def port_vol(weight):
+    return np.sqrt(np.dot(weight.T, np.dot(ret.cov() * 126, weigth)))
+
+prets = []
+pvols = []
+for p in range 2500:
+    weigth
+    weigth /= np.sum(weigth)
+    prets.append(port_ret(weigth))
+    pvols.append(port_vol(weigth))
+prets = np.array(prets)
+pvols = np.array(pvols)
+
 '''
 fig = plt.figure()
 ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
