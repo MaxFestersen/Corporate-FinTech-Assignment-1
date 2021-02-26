@@ -81,11 +81,11 @@ pd_data = pd_data[curr_in] # Apply filter list
 #%% Exercise 2.2 b
 weigth = 1/weigth_random_top_curr # calculate 1/N weights
 
-pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close')
 ret = pd_data_1/pd_data_1.shift(1)
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all')
+pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close') # Set names as columns, close as values with date as index
 
-plt.plot(ret)
+#plt.plot(ret)
 
 ret_data = pd_data_1.pct_change()[1:]
 print(ret_data.head())
