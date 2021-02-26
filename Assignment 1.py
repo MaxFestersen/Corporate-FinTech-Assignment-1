@@ -103,3 +103,9 @@ data_cmc.index = pd.DatetimeIndex(data_cmc['date'])
 symbol = 'bitcoin'
 data_symbol = pd.DataFrame(data_cmc['close'].loc[data_cmc['name'] == symbol])
 print(data_symbol)
+
+#%% Exercise 2.c
+results = {} # generate dictionary to carry information for each iteration
+#for i in 1:10000{
+#    results[] = results{i = i, portfolio_return = x, portfolio_volatility = y, Sharpe ratio=z}
+#}
