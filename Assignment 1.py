@@ -46,6 +46,7 @@ crypto_curr = new_data_median_sorted.head(50) # Get 50 first results - the top 5
 print(crypto_curr) # Print results
 # 2017-06-01 - 2018-01-01 (Close values)
 
+
 #%% Exercise 2.2
 #%% Exercise 2.2 a
 pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
@@ -65,7 +66,6 @@ unique_day_until = unique_day_until.strftime("%Y-%m-%d") # Format as string
 
 # Print random date information:
 print("The random chosen date is: " + unique_day)
-
 
 # Choose a random N of cryptos
 random_top_curr = crypto_curr.index.values # top 50 curencies - from 2.1
@@ -134,6 +134,7 @@ plt.show();
 #n.randdom.day = random.randint(0,n.unique_days)
 #unique_day = unique_days[n.randdom.day] # get entry
 
+
 #%% Exercise 2.c
 for i in range(1,10000):
     results["i"] = 0
@@ -193,18 +194,23 @@ for i in range(1,10000):
     # Sharpe ratio (for holding period)
     # results["sharpe_ratio"] = z
 
+
 #%% Excersice 2.d
 #ex2 = plt.plot(results["N"], results["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
+
 
 #%% Excersice 3
 #%% Excersice 3.a
 
 #%% Excersice 3.b
 
+
 #%% Excersice 3.c
+
 
 #%% Excersice 3.d
 #ex3 = plt.plot(results["N"], results_ex3["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
+
 
 #%% Excersice 4
 #fig, ex4 = plt.subplots(2)
