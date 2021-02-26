@@ -35,6 +35,15 @@ results = { # generate dictionary to carry information for each iteration
 }
 results["i"] = 0 # First result is created outside of loop
 
+# Preperation to choose random date
+unique_days = pd_data["date"].unique() # filter unique days in data
+last_day = datetime.strptime(unique_days[-1], "%Y-%m-%d") # Get last date entry in date format (to make date calculations)
+last_available_date = last_day - relativedelta(months=+6) # Get last date that is at least 6 months from end date
+last_available_date = last_available_date.strftime("%Y-%m-%d") # Format as string
+unique_days_filter = unique_days <= last_available_date # create filter list
+unique_days = unique_days[unique_days_filter] # filter unavailable dates (not with 6 months after)
+n_unique_days = len(unique_days) # count unique days
+
 
 #%% Exercise 2.1
 new_data_1 = new_data[['date', 'name', 'volume']] # Get data needed
@@ -52,13 +61,6 @@ print(crypto_curr) # Print results
 pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
 
 # Choosing a random date
-unique_days = pd_data["date"].unique() # filter unique days in data
-last_day = datetime.strptime(unique_days[-1], "%Y-%m-%d") # Get last date entry in date format (to make date calculations)
-last_available_date = last_day - relativedelta(months=+6) # Get last date that is at least 6 months from end date
-last_available_date = last_available_date.strftime("%Y-%m-%d") # Format as string
-unique_days_filter = unique_days <= last_available_date # create filter list
-unique_days = unique_days[unique_days_filter] # filter unavailable dates (not with 6 months after)
-n_unique_days = len(unique_days) # count unique days
 n_randdom_day = random.randint(0,n_unique_days-1) # Select random entry number
 unique_day = unique_days[n_randdom_day] # get entry
 unique_day_until = datetime.strptime(unique_day, "%Y-%m-%d") + relativedelta(months=+6) # Find 6 months after random date
