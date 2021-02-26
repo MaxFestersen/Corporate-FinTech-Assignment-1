@@ -108,6 +108,12 @@ port_ret = weighted_returns.sum(axis = 1)
 overall_sum_port = np.sum(port_ret)
 #print(overall_sum_port)
 
+# Add to array (for ex2 c and ex2 d)
+results["i"] = 0
+results["portfolio_return"] = overall_sum_port
+#results["portfolio_volatility"] = y
+#results["sharpe_ratio"] = z
+
 # What is this..?
 ret.cov()
 '''
