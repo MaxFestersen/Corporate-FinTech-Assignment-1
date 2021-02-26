@@ -103,6 +103,7 @@ port_ret = weighted_returns.sum(axis = 1)
 overall_sum_port = np.sum(port_ret)
 #print(overall_sum_port)
 
+# What is this..?
 ret.cov()
 '''
 fig = plt.figure()
@@ -116,19 +117,6 @@ plt.show();
 #n.randdom.day = random.randint(0,n.unique_days)
 #unique_day = unique_days[n.randdom.day] # get entry
 
-
-
-#new_data_median_sorted.
-
-#len
-
-
-data_cmc = pd.read_csv('crypto-markets.csv')
-data_cmc['date'] = pd.to_datetime(data_cmc['date'])
-data_cmc.index = pd.DatetimeIndex(data_cmc['date'])
-symbol = 'bitcoin'
-data_symbol = pd.DataFrame(data_cmc['close'].loc[data_cmc['name'] == symbol])
-print(data_symbol)
 
 #%% Exercise 2.c
 results = {} # generate dictionary to carry information for each iteration
