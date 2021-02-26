@@ -19,19 +19,24 @@ new_data.info()
 
 
 #%% Exercise 1
-new_data_1 = new_data[['date', 'name', 'volume']]
-
-# Use to print out nicely :D
-new_data_median_sorted = new_data_1.groupby("name").agg({"volume": ["median"]}).sort_values(by=("volume", "median"), ascending=False)
-print(new_data_median_sorted)
-crypto_curr = new_data_median_sorted.head(50)
-print(crypto_curr)
-# 2017-06-01 - 2018-01-01 (Close values)
+print("See external file LINK")
 
 #%% Exercise 2
 
+#%% Exercise 2 preperation
 random.seed(42069)
 
+#%% Exercise 2.1
+new_data_1 = new_data[['date', 'name', 'volume']] # Get data needed
+
+# Use to print out nicely :D
+new_data_median_sorted = new_data_1.groupby("name").agg({"volume": ["median"]}).sort_values(by=("volume", "median"), ascending=False) # Group by name, aggregate volume by median and sort by volume as primary and then median as secondary
+# print(new_data_median_sorted)
+crypto_curr = new_data_median_sorted.head(50) # Get 50 first results - the top 50 because of sorting
+print(crypto_curr) # Print results
+# 2017-06-01 - 2018-01-01 (Close values)
+
+#%% Exercise 2.2
 pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
 
 # Choosing a random date
