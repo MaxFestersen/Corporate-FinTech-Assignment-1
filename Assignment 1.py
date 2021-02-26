@@ -8,6 +8,7 @@ import scipy.stats as scs
 import random
 import os
 from matplotlib.pylab import mpl, plt
+from dateutil.relativedelta import relativedelta
 
 #%% Read data into code
 data = pd.read_csv('crypto-markets.csv')
