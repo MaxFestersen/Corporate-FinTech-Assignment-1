@@ -60,7 +60,11 @@ print("The random chosen date is: " + unique_day)
 
 # Choose a random N of cryptos
 top_currencies = crypto_curr.index.values # top 50 curencies - from 2.1
-random_top_curr = set(random.choices(top_currencies, k=random.randint(1,50))) # Select random number of currensies
+#random_top_curr = set(random.choices(top_currencies, k=random.randint(1,50))) # Select random number of currensies
+for i in range(random.randint(0,49)):
+    print("hej")
+    random_top_curr = np.delete(top_currencies, random.randint(0,len(top_currencies)), 0)
+
 weigth_random_top_curr = len(random_top_curr) # Amount of currencsies
 print("There are ", weigth_random_top_curr, " currencies.\nThe random top currencies are:")
 random_top_curr
