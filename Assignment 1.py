@@ -196,3 +196,18 @@ for i in range(1,10000):
 #%% Excersice 2.d
 #ex2 = plt.plot(results["N"], results["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
 
+#%% Excersice 3
+#%% Excersice 3.a
+
+#%% Excersice 3.b
+
+#%% Excersice 3.c
+
+#%% Excersice 3.d
+#ex3 = plt.plot(results["N"], results_ex3["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
+
+#%% Excersice 4
+#fig, ex4 = plt.subplots(2)
+#fig.suptitle('Comparing results from 2. and 3.')
+#ex4[0].ex2
+#ex4[1].ex3
