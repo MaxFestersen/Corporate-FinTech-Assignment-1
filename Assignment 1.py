@@ -6,8 +6,8 @@ import pandas as pd
 import scipy.stats as scs
 # from pylab import mpl, plt
 import random
-import os
 from matplotlib.pylab import mpl, plt
+import datetime
 from dateutil.relativedelta import relativedelta
 
 #%% Read data into code
