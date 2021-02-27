@@ -107,34 +107,18 @@ ret
 #plt.plot(ret)
 
 # Portfolio return, Portfolio volatility, and Sharpe ratio
-# Portfolio return (for holding period)
-ret_data = pd_data_1.pct_change()[1:] # Calculate the procentage change in the prices pr. day
-#print(ret_data.head())
-
-# portfolio return (for holding period)
-weighted_returns = (weigth * ret_data) # Return times the weight
-#print(weighted_returns)
-
-port_ret = weighted_returns.sum(axis = 1)
-#print(port_ret)
-
-overall_sum_port = np.sum(port_ret)
-#print(overall_sum_port)
-
-# Add to array (for ex2 c and ex2 d)
-results["portfolio_return"] = overall_sum_port
 
 
 # Portfolio volatility (for holding period)
 ret.mean() * 126 # Calculate mean of return (from half of an year)
-ret.cov() * 126# Calculate covariance matrix for stocks
+ret.cov() * 126 # Calculate covariance matrix for stocks
 
 np.sum(ret.mean().values * weight_array) * 126
 np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array))
 math.sqrt(np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array )))
 
 def port_ret(weight, retmean):
-    return np.sum(retmean * weigth) * 126
+    return np.sum(retmean * weigth.T) * 126
 
 def port_vol(weight, retcov):
     p_var = np.dot(weight,
@@ -149,16 +133,21 @@ def port_vol(weight, retcov):
 
 prets = []
 pvols = []
-prets.append(port_ret(weight_array, ret.mean().values))
+prets.append(port_ret(weight_array, ret.mean()))
 pvols.append(port_vol(weight_array, ret.cov()))
 prets = np.array(prets)
 pvols = np.array(pvols)
 
+# Add to array (for ex2 c and ex2 d)
+results["portfolio_return"] = overall_sum_port
 results["portfolio_volatility"] = y
 
 # Sharpe ratio (for holding period)
 #results["sharpe_ratio"] = z
 
+Sharpe_Ratio = ret.mean()/ret.std()
+Holding_SR = (126**0.5) * sum(Sharpe_Ratio)
+Holding_SR
 
 #%% Exercise 2.c
 for i in range(1,10000):
