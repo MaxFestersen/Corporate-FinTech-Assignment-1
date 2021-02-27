@@ -35,6 +35,9 @@ results = { # generate dictionary to carry information for each iteration
 }
 results["i"] = 0 # First result is created outside of loop
 
+# Set inital data
+pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
+
 # Preperation to choose random date
 unique_days = pd_data["date"].unique() # filter unique days in data
 last_day = datetime.strptime(unique_days[-1], "%Y-%m-%d") # Get last date entry in date format (to make date calculations)
@@ -58,8 +61,6 @@ print(crypto_curr) # Print results
 
 #%% Exercise 2.2
 #%% Exercise 2.2 a
-pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
-
 # Choosing a random date
 n_randdom_day = random.randint(0,n_unique_days-1) # Select random entry number
 unique_day = unique_days[n_randdom_day] # get entry
@@ -91,12 +92,17 @@ curr_in = pd_data['name'].isin(random_top_curr) # Create filter list by random t
 pd_data = pd_data[curr_in] # Apply filter list
 
 #%% Exercise 2.2 b
-weigth = 1/weigth_random_top_curr # calculate 1/N weights
-weight_array = np.full((1, weigth_random_top_curr), weigth)
-print(weight_array)
 pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close') # Set names as columns, close as values with date as index
 ret = pd_data_1/pd_data_1.shift(1) # Calculate return of different stocks
+
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
+for item in random_top_curr:
+    if(item not in ret.columns):
+        print(item + " removed because it was emtpty for holding period.")
+weigth = 1/len(ret.columns) # calculate 1/N weights
+print()
+weight_array = np.full((1, len(ret.columns)), weigth)
+print(weight_array)
 ret
 #plt.plot(ret)
 
