@@ -9,6 +9,7 @@ import random
 from matplotlib.pylab import mpl, plt
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import webbrowser # Skal kun bruges til at vise hjemmeside til opgave 3
 
 #%% Read data into code
 data = pd.read_csv('crypto-markets.csv')
@@ -207,6 +208,7 @@ ex2 = plt.scatter(results["N"], results["portfolio_volatility"]) # En af jer må
 plt.show()
 
 #%% Excersice 3
+webbrowser.open('https://randerson112358.medium.com/python-for-finance-portfolio-optimization-66882498847')  # Go to example.com
 #%% Excersice 3.a
 
 #%% Excersice 3.b
