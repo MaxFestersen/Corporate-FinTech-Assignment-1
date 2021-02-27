@@ -164,3 +164,5 @@ for i in range(1,5):
 #fig.suptitle('Comparing results from 2. and 3.')
 #ex4[0].ex2
 #ex4[1].ex3
+
+print("The end")
