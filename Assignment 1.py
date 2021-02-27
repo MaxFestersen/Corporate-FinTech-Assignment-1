@@ -75,7 +75,7 @@ for n in range(random.randint(0,49)): # Randomly run from 0 to 49 times (so at l
     random_top_curr = np.delete(random_top_curr, random.randint(0,len(random_top_curr)-1), 0) # remove a random value
 
 weigth_random_top_curr = len(random_top_curr) # Amount of currencsies
-results["N"] = weigth_random_top_curr
+
 print("There are ", weigth_random_top_curr, " currencies.\nThe random top currencies are:")
 print(random_top_curr)
 
@@ -101,7 +101,7 @@ for item in random_top_curr:
 weigth = np.array(1/len(ret.columns)) # calculate 1/N weights
 weight_array = np.full((len(ret.columns), 1), weigth)
 
-# Portfolio return, Portfolio volatility, and Sharpe ratio
+results["N"] = len(ret.columns)
 
 
 # Portfolio volatility (for holding period)
