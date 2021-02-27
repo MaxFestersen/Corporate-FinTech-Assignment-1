@@ -137,7 +137,7 @@ Holding_SR = (126**0.5) * sum(Sharpe_Ratio)
 results["sharpe_ratio"] = Holding_SR
 
 #%% Exercise 2.c
-for i in range(1,10000):
+#for i in range(1,10000):
 for i in range(1,5):
     # Ready to rumble
 
