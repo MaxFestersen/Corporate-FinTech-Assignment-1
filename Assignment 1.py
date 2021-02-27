@@ -144,7 +144,7 @@ def port_vol(weight):
 
 prets = []
 pvols = []
-for p in range 2500:
+for p in range(2500):
     weigth
     weigth /= np.sum(weigth)
     prets.append(port_ret(weigth))
