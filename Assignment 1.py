@@ -138,62 +138,8 @@ results["sharpe_ratio"] = Holding_SR
 
 #%% Exercise 2.c
 for i in range(1,10000):
-    results["i"] = 0
-
-    # Select random day
-    n_randdom_day = random.randint(0, n_unique_days - 1)  # Select random entry number
-    unique_day = unique_days[n_randdom_day]  # get entry
-    unique_day_until = datetime.strptime(unique_day, "%Y-%m-%d") + relativedelta(months=+6)  # Find 6 months after random date
-    unique_day_until = unique_day_until.strftime("%Y-%m-%d")  # Format as string
-
-    # Choose a random N of cryptos
-    random_top_curr = crypto_curr.index.values  # top 50 curencies - from 2.1
-    for n in range(random.randint(0, 49)):  # Randomly run from 0 to 49 times (so at least 1 value is left)
-        random_top_curr = np.delete(random_top_curr, random.randint(0, len(random_top_curr) - 1), 0)  # remove a random value
-
-    weigth_random_top_curr = len(random_top_curr)  # Amount of currencsies
-    results["N"] = weigth_random_top_curr
-
-    # Filtering
-    # Filter the days
-    is_dates = pd_data['date'] >= unique_day  # create filtering list from random date
-    pd_data = pd_data[is_dates]  # Filter by the random date and after
-    is_dates = pd_data['date'] <= unique_day_until  # create filtering list until 6 months after random date
-    pd_data = pd_data[is_dates]  # Filter by the random date and after
-
-    # Filter by top currensies
-    curr_in = pd_data['name'].isin(random_top_curr)  # Create filter list by random top currensies
-    pd_data = pd_data[curr_in]  # Apply filter list
-
-    # Weighting
-    weigth = 1 / weigth_random_top_curr  # calculate 1/N weights
-
-    pd_data_1 = pd_data.pivot_table(index='date', columns='name', values='close')  # Set names as columns, close as values with date as index
-    ret = pd_data_1 / pd_data_1.shift(1)  # whaaaatttt is hapening here?
-    ret = ret.dropna(axis=1, how='all').dropna(axis=0, how='all')  # Or here?
-
-    # portfolio return, portfolio volatility, and Sharpe ratio
-    # portfolio return (for holding period)
-    ret_data = pd_data_1.pct_change()[1:]
-    # print(ret_data.head())
-
-    weighted_returns = (weigth * ret_data)
-    # print(weighted_returns)
-
-    port_ret = weighted_returns.sum(axis=1)
-    # print(port_ret)
-
-    overall_sum_port = np.sum(port_ret)
-    # print(overall_sum_port)
-
-    # Add to array (for ex2 c and ex2 d)
-    results["portfolio_return"] = overall_sum_port
-
-    # Portfolio volatility (for holding period)
-    # results["portfolio_volatility"] = y
-
-    # Sharpe ratio (for holding period)
-    # results["sharpe_ratio"] = z
+for i in range(1,5):
+    # Ready to rumble
 
 
 #%% Excersice 2.d
