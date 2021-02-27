@@ -124,13 +124,8 @@ overall_sum_port = np.sum(port_ret)
 # Add to array (for ex2 c and ex2 d)
 results["portfolio_return"] = overall_sum_port
 
+
 # Portfolio volatility (for holding period)
-#results["portfolio_volatility"] = y
-
-# Sharpe ratio (for holding period)
-#results["sharpe_ratio"] = z
-
-# What is this..?
 ret.mean() * 126 # Calculate mean of return (from half of an year)
 ret.cov() * 126# Calculate covariance matrix for stocks
 
@@ -159,17 +154,10 @@ pvols.append(port_vol(weight_array, ret.cov()))
 prets = np.array(prets)
 pvols = np.array(pvols)
 
-'''
-fig = plt.figure()
-ax1 = fig.add_axes([0.1,0.1,0.8,0.8])
-ax1.hist(port_ret, bins = 60)
-ax1.set_xlabel('Portfolio returns')
-ax1.set_ylabel("Freq")
-ax1.set_title("Portfolio Returns calculated manually")
-plt.show();
-'''
-#n.randdom.day = random.randint(0,n.unique_days)
-#unique_day = unique_days[n.randdom.day] # get entry
+results["portfolio_volatility"] = y
+
+# Sharpe ratio (for holding period)
+#results["sharpe_ratio"] = z
 
 
 #%% Exercise 2.c
