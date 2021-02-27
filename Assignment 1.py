@@ -87,7 +87,7 @@ is_dates = pd_data['date'] <= unique_day_until # create filtering list until 6 m
 pd_data = pd_data[is_dates] # Filter by the random date and after
 
 # Filter by top currensies
-curr_in = pd_data['name'].isin(random_top_curr) # Create filter list by random top currensies
+curr_in = pd_data['name'].isin(random_top_curr) # Create filter list by random top currencies
 pd_data = pd_data[curr_in] # Apply filter list
 
 #%% Exercise 2.2 b
@@ -96,7 +96,7 @@ weight_array = np.full((1, weigth_random_top_curr), weigth)
 print(weight_array)
 pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close') # Set names as columns, close as values with date as index
 ret = pd_data_1/pd_data_1.shift(1) # Calculate return of different stocks
-ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Or here?
+ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
 ret
 #plt.plot(ret)
 
@@ -130,20 +130,17 @@ ret.cov() # Calculate covariance matrix for stocks
 
 np.sum(ret.mean() * weight_array) * 126
 np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array))
-math.sqrt(np.dot(weight_array.T, np.dot(ret.cov() * 126, weigth_array )))
-def port_ret(weight):
-    return np.sum(ret.mean() * weigth) * 126
+math.sqrt(np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array )))
+def port_ret(weight_array):
+    return np.sum(ret.mean() * weight_array) * 126
 
-def port_vol(weight):
-    return np.sqrt(np.dot(weight.T, np.dot(ret.cov() * 126, weigth)))
+def port_vol(weight_array):
+    return np.sqrt(np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array)))
 
 prets = []
 pvols = []
-for p in range 2500:
-    weigth
-    weigth /= np.sum(weigth)
-    prets.append(port_ret(weigth))
-    pvols.append(port_vol(weigth))
+prets.append(port_ret(weight_array))
+pvols.append(port_vol(weight_array))
 prets = np.array(prets)
 pvols = np.array(pvols)
 
