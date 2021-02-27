@@ -127,23 +127,14 @@ def port_vol(weight, retcov):
         vals.append(sum(arr))
     return np.sqrt(sum(vals))
 
-prets = []
-pvols = []
-prets.append(port_ret(weight_array, ret.mean()))
-pvols.append(port_vol(weight_array, ret.cov()))
-prets = np.array(prets)
-pvols = np.array(pvols)
-
 # Add to array (for ex2 c and ex2 d)
-results["portfolio_return"] = overall_sum_port
-results["portfolio_volatility"] = y
+results["portfolio_return"] = port_ret(weight_array, ret.mean())
+results["portfolio_volatility"] = port_vol(weight_array, ret.cov())
 
 # Sharpe ratio (for holding period)
-#results["sharpe_ratio"] = z
-
 Sharpe_Ratio = ret.mean()/ret.std()
 Holding_SR = (126**0.5) * sum(Sharpe_Ratio)
-Holding_SR
+results["sharpe_ratio"] = Holding_SR
 
 #%% Exercise 2.c
 for i in range(1,10000):
