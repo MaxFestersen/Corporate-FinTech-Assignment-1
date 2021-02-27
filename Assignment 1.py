@@ -88,13 +88,14 @@ is_dates = pd_data['date'] <= unique_day_until # create filtering list until 6 m
 pd_data = pd_data[is_dates] # Filter by the random date and after
 
 # Filter by top currensies
-curr_in = pd_data['name'].isin(random_top_curr) # Create filter list by random top currensies
+curr_in = pd_data['name'].isin(random_top_curr) # Create filter list by random top currencies
 pd_data = pd_data[curr_in] # Apply filter list
 
 #%% Exercise 2.2 b
 pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close') # Set names as columns, close as values with date as index
 ret = pd_data_1/pd_data_1.shift(1) # Calculate return of different stocks
-ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Or here?
+
+ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
 for item in random_top_curr:
     if(item not in ret.columns):
         print(item + " removed because it was emtpty for holding period.")
@@ -136,6 +137,7 @@ ret.cov() # Calculate covariance matrix for stocks
 np.sum(ret.mean().values * weight_array) * 126
 np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array))
 math.sqrt(np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array )))
+
 def port_ret(weight, retmean):
     return np.sum(retmean * weigth) * 126
 
