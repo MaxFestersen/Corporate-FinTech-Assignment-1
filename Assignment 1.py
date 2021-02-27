@@ -100,7 +100,7 @@ for item in random_top_curr:
         print(item + " removed because it was emtpty for holding period.")
 weigth = 1/len(ret.columns) # calculate 1/N weights
 print()
-weight_array = np.full((1, len(ret.columns)), weigth)
+weight_array = np.full((len(ret.columns), 1), weigth)
 print(weight_array)
 ret
 #plt.plot(ret)
@@ -130,25 +130,22 @@ results["portfolio_return"] = overall_sum_port
 #results["sharpe_ratio"] = z
 
 # What is this..?
-ret.mean() * 126
+ret.mean() * 126 # Calculate mean of return (from half of an year)
 ret.cov() # Calculate covariance matrix for stocks
 
-np.sum(ret.mean() * weight_array) * 126
+np.sum(ret.mean().values * weight_array) * 126
 np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array))
-math.sqrt(np.dot(weight_array.T, np.dot(ret.cov() * 126, weigth_array )))
-def port_ret(weight):
-    return np.sum(ret.mean() * weigth) * 126
+math.sqrt(np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array )))
+def port_ret(weight, retmean):
+    return np.sum(retmean * weigth) * 126
 
-def port_vol(weight):
-    return np.sqrt(np.dot(weight.T, np.dot(ret.cov() * 126, weigth)))
+def port_vol(weight, retcov):
+    return np.sqrt(np.dot(weight.T, np.dot(retcov * 126, weigth)))
 
 prets = []
 pvols = []
-for p in range(2500):
-    weigth
-    weigth /= np.sum(weigth)
-    prets.append(port_ret(weigth))
-    pvols.append(port_vol(weigth))
+prets.append(port_ret(weight_array, ret.mean().values))
+pvols.append(port_vol(weight_array,ret.cov()))
 prets = np.array(prets)
 pvols = np.array(pvols)
 
