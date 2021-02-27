@@ -12,11 +12,10 @@ from dateutil.relativedelta import relativedelta
 
 #%% Read data into code
 data = pd.read_csv('crypto-markets.csv')
-
-data.describe()
+#data.describe()
 
 new_data = data.loc[data['date'] > '2017 - 01 - 01'] # Sorterer dato, så datoer før 01-01-2017 ikke bruges :D
-new_data.info()
+#new_data.info()
 
 
 #%% Exercise 1
@@ -78,7 +77,7 @@ for n in range(random.randint(0,49)): # Randomly run from 0 to 49 times (so at l
 weigth_random_top_curr = len(random_top_curr) # Amount of currencsies
 results["N"] = weigth_random_top_curr
 print("There are ", weigth_random_top_curr, " currencies.\nThe random top currencies are:")
-random_top_curr
+print(random_top_curr)
 
 #%% Exercise 2.2 a filtering
 # Filter the days
@@ -100,11 +99,7 @@ for item in random_top_curr:
     if(item not in ret.columns):
         print(item + " removed because it was emtpty for holding period.")
 weigth = np.array(1/len(ret.columns)) # calculate 1/N weights
-print()
 weight_array = np.full((len(ret.columns), 1), weigth)
-print(weight_array)
-ret
-#plt.plot(ret)
 
 # Portfolio return, Portfolio volatility, and Sharpe ratio
 
