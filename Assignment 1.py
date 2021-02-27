@@ -92,12 +92,16 @@ curr_in = pd_data['name'].isin(random_top_curr) # Create filter list by random t
 pd_data = pd_data[curr_in] # Apply filter list
 
 #%% Exercise 2.2 b
-weigth = 1/weigth_random_top_curr # calculate 1/N weights
-weight_array = np.full((1, weigth_random_top_curr), weigth)
-print(weight_array)
 pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close') # Set names as columns, close as values with date as index
 ret = pd_data_1/pd_data_1.shift(1) # Calculate return of different stocks
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Or here?
+for item in random_top_curr:
+    if(item not in ret.columns):
+        print(item + " removed because it was emtpty for holding period.")
+weigth = 1/len(ret.columns) # calculate 1/N weights
+print()
+weight_array = np.full((1, len(ret.columns)), weigth)
+print(weight_array)
 ret
 #plt.plot(ret)
 
