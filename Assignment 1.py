@@ -35,6 +35,9 @@ results = { # generate dictionary to carry information for each iteration
 }
 results["i"] = 0 # First result is created outside of loop
 
+# Set inital data
+pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
+
 # Preperation to choose random date
 unique_days = pd_data["date"].unique() # filter unique days in data
 last_day = datetime.strptime(unique_days[-1], "%Y-%m-%d") # Get last date entry in date format (to make date calculations)
@@ -58,8 +61,6 @@ print(crypto_curr) # Print results
 
 #%% Exercise 2.2
 #%% Exercise 2.2 a
-pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
-
 # Choosing a random date
 n_randdom_day = random.randint(0,n_unique_days-1) # Select random entry number
 unique_day = unique_days[n_randdom_day] # get entry
