@@ -97,13 +97,14 @@ ret = np.log(pd_data_1/pd_data_1.shift(1)) # Calculate log-return of different s
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
 for item in random_top_curr:
     if(item not in ret.columns):
-        print(item + " removed because it was emtpty for holding period.")
+        print(item + " removed because it was emtpty for holding period. N is now: " + str(len(ret.columns)))
 weigth = np.array(1/len(ret.columns)) # calculate 1/N weights
-weight_array = np.full((len(ret.columns), 1), weigth)
 
 results["N"] = len(ret.columns)
 
+weight_array = np.full((len(ret.columns), 1), weigth)
 
+# Portfolio return, Portfolio volatility, and Sharpe ratio
 # Portfolio volatility (for holding period)
 ret.mean() * 126 # Calculate mean of return (from half of an year)
 ret.cov() * 126 # Calculate covariance matrix for stocks
