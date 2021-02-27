@@ -124,6 +124,7 @@ def port_vol(weight, retcov):
                    ))
     vals = []
     for arr in p_var:
+        np.nan_to_num(arr, copy=True, nan=0, posinf=None, neginf=None)
         vals.append(sum(arr))
     return np.sqrt(sum(vals))
 
@@ -174,9 +175,10 @@ for i in range(1,500):
 
     ret = ret.dropna(axis=1, how='all').dropna(axis=0, how='all')  # Handling missing values, drop column/row if empty
     if len(ret.columns) == 0: # if there are no columns set vals as NaN
-        results["portfolio_return"].append(float("NaN"))
-        results["portfolio_volatility"].append(float("NaN"))
-        results["sharpe_ratio"].append(float("NaN"))
+        results["N"].append(0)
+        results["portfolio_return"].append(0)
+        results["portfolio_volatility"].append(0)
+        results["sharpe_ratio"].append(0)
     else:
         weigth = np.array(1 / len(ret.columns))  # calculate 1/N weights
         results["N"].append(len(ret.columns))
@@ -197,8 +199,12 @@ for i in range(1,500):
 
 #print(results)
 #%% Excersice 2.d
-#ex2 = plt.plot(results["N"], results["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
+#filter nan results
 
+#
+ex2 = plt.scatter(results["N"], results["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
+#ex2_return = plt.scatter(results["N"], results["portfolio_return"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
+plt.show()
 
 #%% Excersice 3
 #%% Excersice 3.a
