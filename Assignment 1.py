@@ -93,13 +93,13 @@ pd_data = pd_data[curr_in] # Apply filter list
 
 #%% Exercise 2.2 b
 pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close') # Set names as columns, close as values with date as index
-ret = pd_data_1/pd_data_1.shift(1) # Calculate return of different stocks
+ret = np.log(pd_data_1/pd_data_1.shift(1)) # Calculate log-return of different stocks
 
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
 for item in random_top_curr:
     if(item not in ret.columns):
         print(item + " removed because it was emtpty for holding period.")
-weigth = 1/len(ret.columns) # calculate 1/N weights
+weigth = np.array(1/len(ret.columns)) # calculate 1/N weights
 print()
 weight_array = np.full((len(ret.columns), 1), weigth)
 print(weight_array)
@@ -132,7 +132,7 @@ results["portfolio_return"] = overall_sum_port
 
 # What is this..?
 ret.mean() * 126 # Calculate mean of return (from half of an year)
-ret.cov() # Calculate covariance matrix for stocks
+ret.cov() * 126# Calculate covariance matrix for stocks
 
 np.sum(ret.mean().values * weight_array) * 126
 np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array))
@@ -142,7 +142,7 @@ def port_ret(weight, retmean):
     return np.sum(retmean * weigth) * 126
 
 def port_vol(weight, retcov):
-    return np.sqrt(np.dot(weight.T, np.dot(retcov * 126, weigth)))
+    return np.sqrt(np.dot(weight, np.dot(retcov * 126, weigth)))
 
 prets = []
 pvols = []
