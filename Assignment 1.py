@@ -142,12 +142,20 @@ def port_ret(weight, retmean):
     return np.sum(retmean * weigth) * 126
 
 def port_vol(weight, retcov):
-    return np.sqrt(np.dot(weight, np.dot(retcov * 126, weigth)))
+    p_var = np.dot(weight,
+                   np.dot(
+                       weight.T,
+                       retcov
+                   ))
+    vals = []
+    for arr in p_var:
+        vals.append(sum(arr))
+    return sum(vals)
 
 prets = []
 pvols = []
 prets.append(port_ret(weight_array, ret.mean().values))
-pvols.append(port_vol(weight_array,ret.cov()))
+pvols.append(port_vol(weight_array, ret.cov()))
 prets = np.array(prets)
 pvols = np.array(pvols)
 
