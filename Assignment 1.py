@@ -10,6 +10,8 @@ from matplotlib.pylab import mpl, plt
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import webbrowser # Skal kun bruges til at vise hjemmeside til opgave 3
+plt.style.use('fivethirtyeight')
+import PyPortfolioOpt
 
 #%% Read data into code
 data = pd.read_csv('crypto-markets.csv')
@@ -210,7 +212,114 @@ plt.show()
 #%% Excersice 3
 webbrowser.open('https://randerson112358.medium.com/python-for-finance-portfolio-optimization-66882498847')  # Go to example.com
 #%% Excersice 3.a
+data = pd.read_csv('crypto-markets.csv')
+#data.describe()
 
+new_data = data.loc[data['date'] > '2017 - 01 - 01'] # Sorterer dato, så datoer før 01-01-2017 ikke bruges :D
+#new_data.info()
+
+
+#%% Exercise 1
+print("See external file LINK")
+
+random.seed(42069)
+results = { # generate dictionary to carry information for each iteration
+    "i" : [], # Iteration
+    "N": [], # Number of cryptos
+    "portfolio_return" : [],
+    "portfolio_volatility" : [],
+    "sharpe_ratio" : []
+}
+results["i"].append(0) # First result is created outside of loop
+
+# Set inital data
+pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
+
+# Preperation to choose random date
+unique_days = pd_data["date"].unique() # filter unique days in data
+last_day = datetime.strptime(unique_days[-1], "%Y-%m-%d") # Get last date entry in date format (to make date calculations)
+last_available_date = last_day - relativedelta(months=+6) # Get last date that is at least 6 months from end date
+last_available_date = last_available_date.strftime("%Y-%m-%d") # Format as string
+unique_days_filter = unique_days <= last_available_date # create filter list
+unique_days = unique_days[unique_days_filter] # filter unavailable dates (not with 6 months after)
+n_unique_days = len(unique_days) # count unique days
+
+new_data_1 = new_data[['date', 'name', 'volume']] # Get data needed
+
+# Use to print out nicely :D
+new_data_median_sorted = new_data_1.groupby("name").agg({"volume": ["median"]}).sort_values(by=("volume", "median"), ascending=False) # Group by name, aggregate volume by median and sort by volume as primary and then median as secondary
+# print(new_data_median_sorted)
+crypto_curr = new_data_median_sorted.head(50) # Get 50 first results - the top 50 because of sorting
+print(crypto_curr) # Print results
+# 2017-06-01 - 2018-01-01 (Close values)
+
+# Choosing a random date
+n_randdom_day = random.randint(0,n_unique_days-1) # Select random entry number
+unique_day = unique_days[n_randdom_day] # get entry
+unique_day_until = datetime.strptime(unique_day, "%Y-%m-%d") + relativedelta(months=+6) # Find 6 months after random date
+unique_day_until = unique_day_until.strftime("%Y-%m-%d") # Format as string
+
+# Print random date information:
+print("The random chosen date is: " + unique_day)
+
+# Choose a random N of cryptos
+random_top_curr = crypto_curr.index.values # top 50 curencies - from 2.1
+for n in range(random.randint(0,49)): # Randomly run from 0 to 49 times (so at least 1 value is left)
+    random_top_curr = np.delete(random_top_curr, random.randint(0,len(random_top_curr)-1), 0) # remove a random value
+
+weigth_random_top_curr = len(random_top_curr) # Amount of currencsies
+
+print("There are ", weigth_random_top_curr, " currencies.\nThe random top currencies are:")
+print(random_top_curr)
+
+# Filter the days
+is_dates = pd_data['date'] >= unique_day # create filtering list from random date
+pd_data = pd_data[is_dates] # Filter by the random date and after
+is_dates = pd_data['date'] <= unique_day_until # create filtering list until 6 months after random date
+pd_data = pd_data[is_dates] # Filter by the random date and after
+
+# Filter by top currencies
+curr_in = pd_data['name'].isin(random_top_curr) # Create filter list by random top currencies
+pd_data = pd_data[curr_in] # Apply filter list
+
+pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close') # Set names as columns, close as values with date as index
+ret = pd_data_1/pd_data_1.shift(1) # Calculate log-return of different stocks
+
+ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
+for item in random_top_curr:
+    if(item not in ret.columns):
+        print(item + " removed because it was emtpty for holding period. N is now: " + str(len(ret.columns)))
+
+#%% Calculations for exercise
+weights = np.array(1 / len(ret.columns)) # Laver 'fiktive' weights (Som bliver ændret med tiden)
+returns = ret.pct_change()  # NOTE!!!! WE ARE USING SIMPLE RETURN AND NOT LOG RETURN!
+cov_matrix_semi_annual = returns.cov() * 126
+
+port_variance = np.dot(weights.T, np.dot(cov_matrix_semi_annual, weights))
+port_volatility = np.sqrt(port_variance)
+portfolioSimpleSemiAnnualReturn = np.sum(returns.mean()*weights) * 126
+
+percent_var = str(np.round(port_variance, 2) * 100) + '%'
+percent_vols = str(np.round(port_volatility, 2) * 100) + '%'
+percent_ret = str(np.round(portfolioSimpleSemiAnnualReturn, 2)*100)+'%'
+print("Expected annual return : "+ percent_ret) # Det her er ikke rigtigt
+print('Annual volatility/standard deviation/risk : '+percent_vols) # Det her virker heller ikke rigtigt
+print('Annual variance : '+percent_var) # Det her virker heller ikke rigtigt.
+
+from pypfopt.efficient_frontier import EfficientFrontier
+from pypfopt import risk_models
+from pypfopt import expected_returns
+
+mu = expected_returns.mean_historical_return(ret) #returns.mean() * 252
+S = risk_models.sample_cov(ret) #Get the sample covariance matrix
+
+ef = EfficientFrontier(mu, S)
+
+weights = ef.max_sharpe() #Maximize the Sharpe ratio, and get the raw weights
+cleaned_weights = ef.clean_weights()
+
+print(cleaned_weights) #Note the weights may have some rounding error, meaning they may not add up exactly to 1 but should be close
+ef.portfolio_performance(verbose=True)
 #%% Excersice 3.b
 
 
