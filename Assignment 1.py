@@ -150,7 +150,7 @@ def port_vol(weight, retcov):
     vals = []
     for arr in p_var:
         vals.append(sum(arr))
-    return sqrt(sum(vals))
+    return np.sqrt(sum(vals))
 
 prets = []
 pvols = []
