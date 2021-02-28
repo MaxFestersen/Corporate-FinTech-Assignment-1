@@ -149,9 +149,15 @@ Sharpe_Ratio = ret.mean()/ret.std()
 Holding_SR = (126**0.5) * sum(Sharpe_Ratio)
 results["sharpe_ratio"].append(Holding_SR)
 
+print("Expected portfolio return : "+ str(results["portfolio_return"]))
+print('Portfolio volatility/standard deviation/risk : '+ str(results["portfolio_volatility"]))
+print('Sharpe Ratio for portfolio : ' + str(results["sharpe_ratio"]))
+
+print("The expected portfolio return shows how much investors have gained/lossed by investing in this portfolio. The volatility show how risky the portfolio is. The Sharpe ratio is the measure of risk-adjusted return of a financial portfolio")
+
 #%% Exercise 2.2.c
-for i in range(1,10000):
-#for i in range(1,5):
+#for i in range(1,10000):
+for i in range(1,5):
     results["i"].append(i)
     # Set inital data
     pd_data = new_data[['date', 'name', 'close']]  # Filter to date, name and close
@@ -266,7 +272,7 @@ curr_in = pd_data['name'].isin(random_top_curr) # Create filter list by random t
 pd_data = pd_data[curr_in] # Apply filter list
 
 pd_data_1 = pd_data.pivot_table(index = 'date', columns = 'name', values = 'close') # Set names as columns, close as values with date as index
-ret = pd_data_1/pd_data_1.shift(1) # Calculate log-return of different stocks
+ret = np.log(pd_data_1/pd_data_1.shift(1)) # Calculate log-return of different stocks
 
 ret = ret.dropna(axis=1, how='all').dropna(axis=0, how='all')  # Handling missing values, drop any column with a nan
 for item in random_top_curr:
@@ -288,8 +294,6 @@ weight_array = np.full((len(ret.columns), 1), weight)  # Create array with weigh
 
 
 def min_func_sharpe(weight_array):
-    print("her")
-    print(weight_array)
     min_sharpe = -port_ret(weight_array) / np.sum(port_vol(weight_array))
     return(min_sharpe)
 
@@ -305,6 +309,46 @@ results_2_3["portfolio_return"].append(port_ret(weight_array))
 results_2_3["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
 results_2_3["sharpe_ratio"].append(port_ret(weight_array)/np.sum(port_vol(weight_array)))
 
+#%% How the theory should have worked!
+ex3_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
+
+df = ex3_data.pivot_table(index='date', columns='name', values='close')  # Set names as columns, close as values with date as index
+symbols = ['ARbit', 'Acoin', 'Alphabit', 'BitBar', 'Bitcoin'] # Manually choose 5 different stocks
+df = df[symbols] # Make them into a DataFrame
+
+returns = df.pct_change() # Create the procentage returns for the stocks
+cov_matrix_annual = returns.cov() * 252 # Calculate the annual covariance-matrix
+
+weight_3 = len(symbols) # Number of stocks
+weight_3_v = 1/len(symbols) # The weight pr. stock
+weight_3_array = np.full((weight_3, 1), weight_3_v) #Make an array with weights
+
+port_variance = np.dot(weight_3_array.T, np.dot(cov_matrix_annual, weight_3_array)) # Calculate the portfolio variance
+
+port_volatility = np.sqrt(port_variance) # Calculate the portfolio volatility
+portfolioSimpleAnnualReturn = np.sum(returns.mean().values*weight_3_array) * 252 #Calculate simple annual return
+
+percent_var = str(np.round(port_variance, 2) * 100) + '%'
+percent_vols = str(np.round(port_volatility, 2) * 100) + '%'
+percent_ret = str(np.round(portfolioSimpleAnnualReturn, 2)*100)+'%'
+print("Expected annual return : "+ percent_ret)
+print('Annual volatility/standard deviation/risk : '+percent_vols)
+print('Annual variance : '+percent_var)
+
+from pypfopt.efficient_frontier import EfficientFrontier
+from pypfopt import risk_models
+from pypfopt import expected_returns
+
+mu = expected_returns.mean_historical_return(df)#returns.mean() * 252
+S = risk_models.sample_cov(df) #Get the sample covariance matrix
+
+ef = EfficientFrontier(mu, S) #Create the Effecient Frontier
+weight_3_array = ef.max_sharpe() #Maximize the Sharpe ratio, and get the raw weights
+cleaned_weights = ef.clean_weights() #Create new weights to the stocks.
+print(cleaned_weights) #Note the weights may have some rounding error, meaning they may not add up exactly to 1 but should be close
+ef.portfolio_performance(verbose=True)
+print()
+print('Hence we see that the weights have changes, and we chould invest almost all of our money into Bitcoin. In order to implement this to our, we needed to include the random choose of N and the random date, and then create a loop in order to do this 10,000 times.')
 print("The loop for Excersice 2.3.c did not work, thus 2.3.c-d and 2.4 could not be done. We used the example from the lectures as a base. During our handling of invalid data, and reformating to run the code, somehow it lost the ability to run.")
 
 #%% Excersice 2.3.c
