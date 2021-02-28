@@ -300,17 +300,17 @@ cleaned_weights = ef.clean_weights()
 
 print(cleaned_weights) #Note the weights may have some rounding error, meaning they may not add up exactly to 1 but should be close
 ef.portfolio_performance(verbose=True)
-#%% Excersice 3.b
+#%% Excersice 2.3.b
 
 
-#%% Excersice 3.c
+#%% Excersice 2.3.c
 
 
-#%% Excersice 3.d
+#%% Excersice 2.3.d
 #ex3 = plt.plot(results["N"], results_ex3["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
 
 
-#%% Excersice 4
+#%% Excersice 2.4
 #fig, ex4 = plt.subplots(2)
 #fig.suptitle('Comparing results from 2. and 3.')
 #ex4[0].ex2
