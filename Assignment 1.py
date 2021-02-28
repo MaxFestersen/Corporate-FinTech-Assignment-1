@@ -10,8 +10,10 @@ from matplotlib.pylab import mpl, plt
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import webbrowser # Skal kun bruges til at vise hjemmeside til opgave 3
+#import PyPortfolioOpt
+
+#%% Design
 plt.style.use('fivethirtyeight')
-import PyPortfolioOpt
 
 #%% Read data into code
 data = pd.read_csv('crypto-markets.csv')
@@ -100,7 +102,11 @@ ret = np.log(pd_data_1/pd_data_1.shift(1)) # Calculate log-return of different s
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
 for item in random_top_curr:
     if(item not in ret.columns):
-        print(item + " removed because it was emtpty for holding period. N is now: " + str(len(ret.columns)))
+        print(item + " removed because it was emtpty for holding period.")
+
+if (len(ret.columns) < weigth_random_top_curr):
+    print("N is now: " + str(len(ret.columns)))
+
 weigth = np.array(1/len(ret.columns)) # calculate 1/N weights
 
 results["N"].append(len(ret.columns))
@@ -140,7 +146,7 @@ Sharpe_Ratio = ret.mean()/ret.std()
 Holding_SR = (126**0.5) * sum(Sharpe_Ratio)
 results["sharpe_ratio"].append(Holding_SR)
 
-#%% Exercise 2.c
+#%% Exercise 2.2.c
 #for i in range(1,10000):
 for i in range(1,500):
     # Set inital data
@@ -201,57 +207,28 @@ for i in range(1,500):
         results["sharpe_ratio"].append(Holding_SR)
 
 #print(results)
-#%% Excersice 2.d
-#filter nan results
-
-#
-ex2 = plt.scatter(results["N"], results["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
-#ex2_return = plt.scatter(results["N"], results["portfolio_return"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
+#%% Excersice 2.2.d
+ex2 = plt.scatter(results["N"], results["portfolio_volatility"])
+#ex2_return = plt.scatter(results["N"], results["portfolio_return"])
 plt.show()
 
-#%% Excersice 3
+#%% Excersice 2.3
 webbrowser.open('https://randerson112358.medium.com/python-for-finance-portfolio-optimization-66882498847')  # Go to example.com
-#%% Excersice 3.a
-data = pd.read_csv('crypto-markets.csv')
-#data.describe()
 
-new_data = data.loc[data['date'] > '2017 - 01 - 01'] # Sorterer dato, så datoer før 01-01-2017 ikke bruges :D
-#new_data.info()
-
-
-#%% Exercise 1
-print("See external file LINK")
-
-random.seed(42069)
-results = { # generate dictionary to carry information for each iteration
+#%% Excersice 2.3.a
+results_2_3 = { # generate dictionary to carry information for each iteration
     "i" : [], # Iteration
     "N": [], # Number of cryptos
     "portfolio_return" : [],
     "portfolio_volatility" : [],
     "sharpe_ratio" : []
 }
-results["i"].append(0) # First result is created outside of loop
+results_2_3["i"].append(0) # First result is created outside of loop
 
 # Set inital data
 pd_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
 
-# Preperation to choose random date
-unique_days = pd_data["date"].unique() # filter unique days in data
-last_day = datetime.strptime(unique_days[-1], "%Y-%m-%d") # Get last date entry in date format (to make date calculations)
-last_available_date = last_day - relativedelta(months=+6) # Get last date that is at least 6 months from end date
-last_available_date = last_available_date.strftime("%Y-%m-%d") # Format as string
-unique_days_filter = unique_days <= last_available_date # create filter list
-unique_days = unique_days[unique_days_filter] # filter unavailable dates (not with 6 months after)
-n_unique_days = len(unique_days) # count unique days
-
 new_data_1 = new_data[['date', 'name', 'volume']] # Get data needed
-
-# Use to print out nicely :D
-new_data_median_sorted = new_data_1.groupby("name").agg({"volume": ["median"]}).sort_values(by=("volume", "median"), ascending=False) # Group by name, aggregate volume by median and sort by volume as primary and then median as secondary
-# print(new_data_median_sorted)
-crypto_curr = new_data_median_sorted.head(50) # Get 50 first results - the top 50 because of sorting
-print(crypto_curr) # Print results
-# 2017-06-01 - 2018-01-01 (Close values)
 
 # Choosing a random date
 n_randdom_day = random.randint(0,n_unique_days-1) # Select random entry number
@@ -288,7 +265,10 @@ ret = pd_data_1/pd_data_1.shift(1) # Calculate log-return of different stocks
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
 for item in random_top_curr:
     if(item not in ret.columns):
-        print(item + " removed because it was emtpty for holding period. N is now: " + str(len(ret.columns)))
+        print(item + " removed because it was emtpty for holding period.")
+
+if (len(ret.columns) < weigth_random_top_curr):
+    print("N is now: " + str(len(ret.columns)))
 
 #%% Calculations for exercise
 weights = np.array(1 / len(ret.columns)) # Laver 'fiktive' weights (Som bliver ændret med tiden)
