@@ -109,9 +109,9 @@ if (len(ret.columns) < weigth_random_top_curr):
 
 weigth = np.array(1/len(ret.columns)) # calculate 1/N weights
 
-results["N"].append(len(ret.columns))
+results["N"].append(len(ret.columns)) # Append Number of columns to results dictionary
 
-weight_array = np.full((len(ret.columns), 1), weigth)
+weight_array = np.full((len(ret.columns), 1), weigth) # Create array with weights
 
 # Portfolio return, Portfolio volatility, and Sharpe ratio
 # Portfolio volatility (for holding period)
@@ -271,35 +271,81 @@ if (len(ret.columns) < weigth_random_top_curr):
     print("N is now: " + str(len(ret.columns)))
 
 #%% Calculations for exercise
-weights = np.array(1 / len(ret.columns)) # Laver 'fiktive' weights (Som bliver ændret med tiden)
-returns = ret.pct_change()  # NOTE!!!! WE ARE USING SIMPLE RETURN AND NOT LOG RETURN!
-cov_matrix_semi_annual = returns.cov() * 126
+results["N"].append(len(ret.columns)) # Append Number of columns to results dictionary
 
-port_variance = np.dot(weights.T, np.dot(cov_matrix_semi_annual, weights))
-port_volatility = np.sqrt(port_variance)
-portfolioSimpleSemiAnnualReturn = np.sum(returns.mean()*weights) * 126
+# Sharpe ratio (for holding period)
+Sharpe_Ratio = ret.mean()/ret.std() # Calculate sharpe ratio for each currency
+Holding_SR = (126**0.5) * Sharpe_Ratio # Account for holding period
+results["sharpe_ratio"].append(sum(Holding_SR))
 
-percent_var = str(np.round(port_variance, 2) * 100) + '%'
-percent_vols = str(np.round(port_volatility, 2) * 100) + '%'
-percent_ret = str(np.round(portfolioSimpleSemiAnnualReturn, 2)*100)+'%'
-print("Expected annual return : "+ percent_ret) # Det her er ikke rigtigt
-print('Annual volatility/standard deviation/risk : '+percent_vols) # Det her virker heller ikke rigtigt
-print('Annual variance : '+percent_var) # Det her virker heller ikke rigtigt.
+weigths =
 
-from pypfopt.efficient_frontier import EfficientFrontier
-from pypfopt import risk_models
-from pypfopt import expected_returns
 
-mu = expected_returns.mean_historical_return(ret) #returns.mean() * 252
-S = risk_models.sample_cov(ret) #Get the sample covariance matrix
 
-ef = EfficientFrontier(mu, S)
+(Holding_SR/sum(Holding_SR))*100
 
-weights = ef.max_sharpe() #Maximize the Sharpe ratio, and get the raw weights
-cleaned_weights = ef.clean_weights()
 
-print(cleaned_weights) #Note the weights may have some rounding error, meaning they may not add up exactly to 1 but should be close
-ef.portfolio_performance(verbose=True)
+
+
+
+
+
+weigth = np.array(1/len(ret.columns)) # calculate 1/N weights
+weight_array = np.full((len(ret.columns), 1), weigth)
+
+# Portfolio return, Portfolio volatility, and Sharpe ratio
+def port_ret(weight, retmean):
+    return np.sum(retmean * weigth.T) * 126
+
+def port_vol(weight, retcov):
+    p_var = np.dot(weight,
+                   np.dot(
+                       weight.T,
+                       retcov
+                   ))
+    vals = []
+    for arr in p_var:
+        np.nan_to_num(arr, copy=True, nan=0, posinf=None, neginf=None)
+        vals.append(sum(arr))
+    return np.sqrt(sum(vals))
+
+# Add to array (for ex2 c and ex2 d)
+results["portfolio_return"].append(port_ret(weight_array, ret.mean()))
+results["portfolio_volatility"].append(port_vol(weight_array, ret.cov()))
+
+
+# Forsøg 1
+#weights = np.array(1 / len(ret.columns)) # Laver 'fiktive' weights (Som bliver ændret med tiden)
+#returns = ret.pct_change()  # NOTE!!!! WE ARE USING SIMPLE RETURN AND NOT LOG RETURN!
+#cov_matrix_semi_annual = returns.cov() * 126
+
+#port_variance = np.dot(weights.T, np.dot(cov_matrix_semi_annual, weights))
+#port_volatility = np.sqrt(port_variance)
+#portfolioSimpleSemiAnnualReturn = np.sum(returns.mean()*weights) * 126
+
+#percent_var = str(np.round(port_variance, 2) * 100) + '%'
+#percent_vols = str(np.round(port_volatility, 2) * 100) + '%'
+#percent_ret = str(np.round(portfolioSimpleSemiAnnualReturn, 2)*100)+'%'
+#print("Expected annual return : "+ percent_ret) # Det her er ikke rigtigt
+#print('Annual volatility/standard deviation/risk : '+percent_vols) # Det her virker heller ikke rigtigt
+#print('Annual variance : '+percent_var) # Det her virker heller ikke rigtigt.
+
+#from pypfopt.efficient_frontier import EfficientFrontier
+#from pypfopt import risk_models
+#from pypfopt import expected_returns
+
+#mu = expected_returns.mean_historical_return(ret) #returns.mean() * 252
+#S = risk_models.sample_cov(ret) #Get the sample covariance matrix
+
+#ef = EfficientFrontier(mu, S)
+
+#weights = ef.max_sharpe() #Maximize the Sharpe ratio, and get the raw weights
+#cleaned_weights = ef.clean_weights()
+
+#print(cleaned_weights) #Note the weights may have some rounding error, meaning they may not add up exactly to 1 but should be close
+#ef.portfolio_performance(verbose=True)
+# Forsøg 1 slut
+
 #%% Excersice 2.3.b
 
 
