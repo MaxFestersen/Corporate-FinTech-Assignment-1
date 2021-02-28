@@ -103,7 +103,7 @@ ret = np.log(pd_data_1/pd_data_1.shift(1)) # Calculate log-return of different s
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
 for item in random_top_curr:
     if(item not in ret.columns):
-        print(item + " removed because it was emtpty for holding period.")
+        print(item + " removed because it was empty for holding period.")
 
 if (len(ret.columns) < weight_random_top_curr):
     print("N is now: " + str(len(ret.columns)))
@@ -218,7 +218,7 @@ ex2 = plt.scatter(results["N"], results["portfolio_volatility"])
 plt.show()
 
 #%% Excersice 2.3
-webbrowser.open('https://randerson112358.medium.com/python-for-finance-portfolio-optimization-66882498847')  # Go to example.com
+#webbrowser.open('https://randerson112358.medium.com/python-for-finance-portfolio-optimization-66882498847')  # Go to example.com
 
 #%% Excersice 2.3.a
 results_2_3 = { # generate dictionary to carry information for each iteration
@@ -270,7 +270,7 @@ ret = pd_data_1/pd_data_1.shift(1) # Calculate log-return of different stocks
 ret = ret.dropna(axis = 1, how = 'all').dropna(axis = 0, how = 'all') # Handling missing values, drop column/row if empty
 for item in random_top_curr:
     if(item not in ret.columns):
-        print(item + " removed because it was emtpty for holding period.")
+        print(item + " removed because it was empty for holding period.")
 
 if (len(ret.columns) < weight_random_top_curr):
     print("N is now: " + str(len(ret.columns)))
@@ -301,6 +301,9 @@ bnds = tuple((0, 1) for x in range(len(ret.columns)))
 #opts = sco.minimize(min_func_sharpe, weight, ret.mean(), weight_array, ret.cov(), method='SLSQP', bounds=bnds, constraints=cons)
 opts = sco.minimize(min_func_sharpe, weight, method='SLSQP', bounds=bnds, constraints=cons)
 
+optv = optv = sco.minimize(port_vol, weight_array,
+                    method='SLSQP', bounds=bnds,
+                    constraints=cons)
 
 #returns = ret.pct_change()  # SIMPLE RETURN AND NOT LOG RETURN
 #cov_matrix_semi_annual = returns.cov() * 126 # Account for holding period
