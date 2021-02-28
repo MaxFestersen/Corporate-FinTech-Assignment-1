@@ -286,10 +286,20 @@ results["sharpe_ratio"].append(sum(Holding_SR))
 weight = np.array(1/len(ret.columns)) # Calculate 1/N weights
 weight_array = np.full((len(ret.columns), 1), weight) # Create array with weight N times
 
-min_func_sharpe(weight_array)
--port_ret(weight_array, ret.mean()) / port_vol(weight_array, ret.cov())
-port_ret(weight_array, ret.mean())
+def min_func_sharpe(weight, retmean, weight_array, retcov):
+    min_sharpe = -port_ret(weight, retmean) / np.sum(port_vol(weight_array, retcov))
+    return(min_sharpe)
 
+def min_func_sharpe(weight):
+    min_sharpe = -port_ret(weight, ret.mean()) / np.sum(port_vol(weight_array, ret.cov()))
+    return(min_sharpe)
+
+#test = min_func_sharpe(weight, ret.mean(), weight_array, ret.cov())
+cons = ({'type': 'eq', 'fun': lambda x:  np.sum(x) - 1})
+bnds = tuple((0, 1) for x in range(len(ret.columns)))
+
+#opts = sco.minimize(min_func_sharpe, weight, ret.mean(), weight_array, ret.cov(), method='SLSQP', bounds=bnds, constraints=cons)
+opts = sco.minimize(min_func_sharpe, weight, method='SLSQP', bounds=bnds, constraints=cons)
 
 
 #returns = ret.pct_change()  # SIMPLE RETURN AND NOT LOG RETURN
