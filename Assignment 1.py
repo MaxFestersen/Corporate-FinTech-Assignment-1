@@ -339,25 +339,10 @@ optv = optv = sco.minimize(port_vol, weight_array,
 # Forsøg 1 slut
 
 # Portfolio return, Portfolio volatility, and Sharpe ratio
-def port_ret(weight, retmean):
-    return np.sum(retmean * weight.T) * 126
-
-def port_vol(weight, retcov):
-    p_var = np.dot(weight,
-                   np.dot(
-                       weight.T,
-                       retcov
-                   ))
-    p_var = np.sqrt(p_var)
-    #vals = []
-    #for arr in p_var:
-    #    np.nan_to_num(arr, copy=True, nan=0, posinf=None, neginf=None)
-    #    vals.append(sum(arr))
-    return(p_var)
 
 # Add to array (for ex2 c and ex2 d)
-results["portfolio_return"].append(port_ret(weight_array, ret.mean()))
-results["portfolio_volatility"].append(port_vol(weight_array, ret.cov()))
+#results["portfolio_return"].append(port_ret(weight_array, ret.mean()))
+#results["portfolio_volatility"].append(port_vol(weight_array))
 
 #%% Excersice 2.3.b
 
