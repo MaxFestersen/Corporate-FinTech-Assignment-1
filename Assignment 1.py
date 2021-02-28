@@ -23,7 +23,7 @@ new_data = data.loc[data['date'] > '2017 - 01 - 01'] # Sorterer dato, så datoer
 
 
 #%% Exercise 1
-print("See external file LINK")
+print("PlaceholderText")
 
 #%% Exercise 2
 
@@ -60,6 +60,7 @@ new_data_median_sorted = new_data_1.groupby("name").agg({"volume": ["median"]}).
 crypto_curr = new_data_median_sorted.head(50) # Get 50 first results - the top 50 because of sorting
 print(crypto_curr) # Print results
 # 2017-06-01 - 2018-01-01 (Close values)
+print("PlaceholderText")
 
 
 #%% Exercise 2.2
@@ -206,10 +207,12 @@ for i in range(1,10000):
         Holding_SR = (126 ** 0.5) * sum(Sharpe_Ratio)
         results["sharpe_ratio"].append(Holding_SR)
 
+print("The code ran 10000 times.")
 #%% Excersice 2.2.d
 ex2 = plt.scatter(results["N"], results["portfolio_volatility"])
 #ex2_return = plt.scatter(results["N"], results["portfolio_return"])
 plt.show()
+print("PlaceholderText")
 
 #%% Excersice 2.3
 #%% Excersice 2.3.a
@@ -296,6 +299,8 @@ results_2_3["portfolio_return"].append(port_ret(weight_array))
 results_2_3["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
 results_2_3["sharpe_ratio"].append(port_ret(weight_array)/np.sum(port_vol(weight_array)))
 
+print("The loop for Excersice 2.3.c did not work, thus 2.3.c-d and 2.4 could not be done. We used the example from the lectures as a base. During our handling of invalid data, and reformating to run the code, somehow it lost the ability to run.")
+
 #%% Excersice 2.3.c
 #for i in range(1,10000):
 for i in range(1,5):
@@ -334,19 +339,15 @@ for i in range(1,5):
         if sum(curr) == 0:
             ret = ret.drop(columns=[name])
 
-    if len(ret.columns) == 0: # if there are no columns set vals as NaN
-        results_2_3["i"].append(i)  # First result is created outside of loop
-        results_2_3["N"].append(0)
-        results_2_3["portfolio_return"].append(0)
-        results_2_3["portfolio_volatility"].append(0)
-        results_2_3["sharpe_ratio"].append(0)
-    else:
+    if len(ret.columns) >= 4: # if there are no columns set vals as NaN
         results_2_3["i"].append(i)  # First result is created outside of loop
         results_2_3["N"].append(len(ret.columns))  # Append Number of columns to results dictionary
 
         # Sharpe ratio (for holding period)
         Sharpe_Ratio = ret.mean() / ret.std()  # Calculate sharpe ratio for each currency
         #Holding_SR = (126 ** 0.5) * Sharpe_Ratio  # Account for holding period
+
+        sum(Sharpe_Ratio/sum(Sharpe_Ratio))
 
         weight = np.array(1 / len(ret.columns))  # Calculate 1/N weights
         weight_array = np.full((len(ret.columns), 1), weight)  # Create array with weight N times
@@ -359,6 +360,9 @@ for i in range(1,5):
         results_2_3["portfolio_return"].append(port_ret(weight_array))
         results_2_3["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
         results_2_3["sharpe_ratio"].append(port_ret(weight_array) / np.sum(port_vol(weight_array)))
+    else:
+        i = i-1
+        continue
 
 #%% Excersice 2.3.d
 #ex3 = plt.plot(results_2_3["N"], results_2_3["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
