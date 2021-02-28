@@ -301,7 +301,7 @@ bnds = tuple((0, 1) for x in range(len(ret.columns)))
 #opts = sco.minimize(min_func_sharpe, weight, ret.mean(), weight_array, ret.cov(), method='SLSQP', bounds=bnds, constraints=cons)
 opts = sco.minimize(min_func_sharpe, weight, method='SLSQP', bounds=bnds, constraints=cons)
 
-optv = optv = sco.minimize(port_vol, weight_array,
+optv = sco.minimize(port_vol, weight_array,
                     method='SLSQP', bounds=bnds,
                     constraints=cons)
 
