@@ -10,6 +10,7 @@ from matplotlib.pylab import mpl, plt
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import webbrowser # Skal kun bruges til at vise hjemmeside til opgave 3
+import scipy.optimize as sco
 #import PyPortfolioOpt
 
 #%% Design
@@ -126,16 +127,19 @@ def port_ret(weight, retmean):
     return np.sum(retmean * weigth.T) * 126
 
 def port_vol(weight, retcov):
-    p_var = np.dot(weight,
+    p_var = np.dot(weight_array,
                    np.dot(
-                       weight.T,
-                       retcov
+                       weight_array.T,
+                       ret.cov()
                    ))
-    vals = []
     for arr in p_var:
-        np.nan_to_num(arr, copy=True, nan=0, posinf=None, neginf=None)
-        vals.append(sum(arr))
-    return np.sqrt(sum(vals))
+        arr[np.isnan(arr)] = 0
+    tada = p_var
+    p_var = np.sqrt(tada)
+    for arr in p_var:
+        arr[np.isnan(arr)] = 0
+    return
+
 
 # Add to array (for ex2 c and ex2 d)
 results["portfolio_return"].append(port_ret(weight_array, ret.mean()))
@@ -148,7 +152,7 @@ results["sharpe_ratio"].append(Holding_SR)
 
 #%% Exercise 2.2.c
 #for i in range(1,10000):
-for i in range(1,500):
+for i in range(1,5):
     # Set inital data
     pd_data = new_data[['date', 'name', 'close']]  # Filter to date, name and close
 
@@ -278,11 +282,17 @@ Sharpe_Ratio = ret.mean()/ret.std() # Calculate sharpe ratio for each currency
 Holding_SR = (126**0.5) * Sharpe_Ratio # Account for holding period
 results["sharpe_ratio"].append(sum(Holding_SR))
 
-weigths =
+weigth = np.array(1/len(ret.columns)) # Calculate 1/N weights
+weight_array = np.full((len(ret.columns), 1), weigth) # Create array with weight N times
+
+min_func_sharpe(weight_array)
+-port_ret(weight_array, ret.mean()) / port_vol(weight_array, ret.cov())
+port_ret(weight_array, ret.mean())
 
 
 
-(Holding_SR/sum(Holding_SR))*100
+#returns = ret.pct_change()  # SIMPLE RETURN AND NOT LOG RETURN
+#cov_matrix_semi_annual = returns.cov() * 126 # Account for holding period
 
 
 
@@ -290,35 +300,11 @@ weigths =
 
 
 
-weigth = np.array(1/len(ret.columns)) # calculate 1/N weights
-weight_array = np.full((len(ret.columns), 1), weigth)
 
-# Portfolio return, Portfolio volatility, and Sharpe ratio
-def port_ret(weight, retmean):
-    return np.sum(retmean * weigth.T) * 126
 
-def port_vol(weight, retcov):
-    p_var = np.dot(weight,
-                   np.dot(
-                       weight.T,
-                       retcov
-                   ))
-    vals = []
-    for arr in p_var:
-        np.nan_to_num(arr, copy=True, nan=0, posinf=None, neginf=None)
-        vals.append(sum(arr))
-    return np.sqrt(sum(vals))
-
-# Add to array (for ex2 c and ex2 d)
-results["portfolio_return"].append(port_ret(weight_array, ret.mean()))
-results["portfolio_volatility"].append(port_vol(weight_array, ret.cov()))
 
 
 # Forsøg 1
-#weights = np.array(1 / len(ret.columns)) # Laver 'fiktive' weights (Som bliver ændret med tiden)
-#returns = ret.pct_change()  # NOTE!!!! WE ARE USING SIMPLE RETURN AND NOT LOG RETURN!
-#cov_matrix_semi_annual = returns.cov() * 126
-
 #port_variance = np.dot(weights.T, np.dot(cov_matrix_semi_annual, weights))
 #port_volatility = np.sqrt(port_variance)
 #portfolioSimpleSemiAnnualReturn = np.sum(returns.mean()*weights) * 126
@@ -345,6 +331,26 @@ results["portfolio_volatility"].append(port_vol(weight_array, ret.cov()))
 #print(cleaned_weights) #Note the weights may have some rounding error, meaning they may not add up exactly to 1 but should be close
 #ef.portfolio_performance(verbose=True)
 # Forsøg 1 slut
+
+# Portfolio return, Portfolio volatility, and Sharpe ratio
+def port_ret(weight, retmean):
+    return np.sum(retmean * weigth.T) * 126
+
+def port_vol(weight, retcov):
+    p_var = np.dot(weight,
+                   np.dot(
+                       weight.T,
+                       retcov
+                   ))
+    vals = []
+    for arr in p_var:
+        np.nan_to_num(arr, copy=True, nan=0, posinf=None, neginf=None)
+        vals.append(sum(arr))
+    return np.sqrt(sum(vals))
+
+# Add to array (for ex2 c and ex2 d)
+results["portfolio_return"].append(port_ret(weight_array, ret.mean()))
+results["portfolio_volatility"].append(port_vol(weight_array, ret.cov()))
 
 #%% Excersice 2.3.b
 
