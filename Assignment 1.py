@@ -80,9 +80,9 @@ random_top_curr = crypto_curr.index.values # top 50 curencies - from 2.1
 for n in range(random.randint(0,49)): # Randomly run from 0 to 49 times (so at least 1 value is left)
     random_top_curr = np.delete(random_top_curr, random.randint(0,len(random_top_curr)-1), 0) # remove a random value
 
-weigth_random_top_curr = len(random_top_curr) # Amount of currencsies
+weight_random_top_curr = len(random_top_curr) # Amount of currencsies
 
-print("There are ", weigth_random_top_curr, " currencies.\nThe random top currencies are:")
+print("There are ", weight_random_top_curr, " currencies.\nThe random top currencies are:")
 print(random_top_curr)
 
 #%% Exercise 2.2 a filtering
@@ -105,14 +105,14 @@ for item in random_top_curr:
     if(item not in ret.columns):
         print(item + " removed because it was emtpty for holding period.")
 
-if (len(ret.columns) < weigth_random_top_curr):
+if (len(ret.columns) < weight_random_top_curr):
     print("N is now: " + str(len(ret.columns)))
 
-weigth = np.array(1/len(ret.columns)) # calculate 1/N weights
+weight = np.array(1/len(ret.columns)) # calculate 1/N weights
 
 results["N"].append(len(ret.columns)) # Append Number of columns to results dictionary
 
-weight_array = np.full((len(ret.columns), 1), weigth) # Create array with weights
+weight_array = np.full((len(ret.columns), 1), weight) # Create array with weights
 
 # Portfolio return, Portfolio volatility, and Sharpe ratio
 # Portfolio volatility (for holding period)
@@ -124,26 +124,28 @@ weight_array = np.full((len(ret.columns), 1), weigth) # Create array with weight
 #math.sqrt(np.dot(weight_array.T, np.dot(ret.cov() * 126, weight_array )))
 
 def port_ret(weight, retmean):
-    return np.sum(retmean * weigth.T) * 126
+    return np.sum(retmean * weight) * 126
 
 def port_vol(weight, retcov):
-    p_var = np.dot(weight_array,
-                   np.dot(
-                       weight_array.T,
-                       ret.cov()
-                   ))
-    for arr in p_var:
-        arr[np.isnan(arr)] = 0
-    tada = p_var
-    p_var = np.sqrt(tada)
-    for arr in p_var:
-        arr[np.isnan(arr)] = 0
-    return
-
+    p_var = np.dot(
+               weight.T,
+               retcov * 126
+           )
+    #p_var = np.dot(
+    #           weight_array.T,
+    #           ret.cov() * 126
+    #       )
+    p_var = np.sqrt(p_var)
+    p_var[np.isnan(p_var)] = 0
+    #p_var = np.array(p_var)
+    #vals = []
+    #for arr in p_var:
+    #    vals.append(sum(arr))
+    return(p_var)
 
 # Add to array (for ex2 c and ex2 d)
-results["portfolio_return"].append(port_ret(weight_array, ret.mean()))
-results["portfolio_volatility"].append(port_vol(weight_array, ret.cov()))
+results["portfolio_return"].append(port_ret(weight, ret.mean()))
+results["portfolio_volatility"].append(np.sum(port_vol(weight_array, ret.cov())))
 
 # Sharpe ratio (for holding period)
 Sharpe_Ratio = ret.mean()/ret.std()
@@ -170,7 +172,7 @@ for i in range(1,5):
     for n in range(random.randint(0, 49)):  # Randomly run from 0 to 49 times (so at least 1 value is left)
         random_top_curr = np.delete(random_top_curr, random.randint(0, len(random_top_curr) - 1), 0)  # remove a random value
 
-    weigth_random_top_curr = len(random_top_curr)  # Amount of currencsies
+    weight_random_top_curr = len(random_top_curr)  # Amount of currencsies
 
     # Filter the days
     is_dates = pd_data['date'] >= unique_day  # create filtering list from random date
@@ -193,24 +195,23 @@ for i in range(1,5):
         results["portfolio_volatility"].append(0)
         results["sharpe_ratio"].append(0)
     else:
-        weigth = np.array(1 / len(ret.columns))  # calculate 1/N weights
+        weight = np.array(1 / len(ret.columns))  # calculate 1/N weights
         results["N"].append(len(ret.columns))
 
-        weight_array = np.full((len(ret.columns), 1), weigth)
+        weight_array = np.full((len(ret.columns), 1), weight)
 
         # Portfolio return, Portfolio volatility, and Sharpe ratio
         # Portfolio return (for holding period)
-        results["portfolio_return"].append(port_ret(weight_array, ret.mean()))
+        results["portfolio_return"].append(port_ret(weight, ret.mean()))
 
         # Portfolio volatility (for holding period)
-        results["portfolio_volatility"].append(port_vol(weight_array, ret.cov()))
+        results["portfolio_volatility"].append(np.sum(port_vol(weight_array, ret.cov())))
 
         # Sharpe ratio (for holding period)
         Sharpe_Ratio = ret.mean() / ret.std()
         Holding_SR = (126 ** 0.5) * sum(Sharpe_Ratio)
         results["sharpe_ratio"].append(Holding_SR)
 
-#print(results)
 #%% Excersice 2.2.d
 ex2 = plt.scatter(results["N"], results["portfolio_volatility"])
 #ex2_return = plt.scatter(results["N"], results["portfolio_return"])
@@ -248,9 +249,9 @@ random_top_curr = crypto_curr.index.values # top 50 curencies - from 2.1
 for n in range(random.randint(0,49)): # Randomly run from 0 to 49 times (so at least 1 value is left)
     random_top_curr = np.delete(random_top_curr, random.randint(0,len(random_top_curr)-1), 0) # remove a random value
 
-weigth_random_top_curr = len(random_top_curr) # Amount of currencsies
+weight_random_top_curr = len(random_top_curr) # Amount of currencsies
 
-print("There are ", weigth_random_top_curr, " currencies.\nThe random top currencies are:")
+print("There are ", weight_random_top_curr, " currencies.\nThe random top currencies are:")
 print(random_top_curr)
 
 # Filter the days
@@ -271,7 +272,7 @@ for item in random_top_curr:
     if(item not in ret.columns):
         print(item + " removed because it was emtpty for holding period.")
 
-if (len(ret.columns) < weigth_random_top_curr):
+if (len(ret.columns) < weight_random_top_curr):
     print("N is now: " + str(len(ret.columns)))
 
 #%% Calculations for exercise
@@ -282,8 +283,8 @@ Sharpe_Ratio = ret.mean()/ret.std() # Calculate sharpe ratio for each currency
 Holding_SR = (126**0.5) * Sharpe_Ratio # Account for holding period
 results["sharpe_ratio"].append(sum(Holding_SR))
 
-weigth = np.array(1/len(ret.columns)) # Calculate 1/N weights
-weight_array = np.full((len(ret.columns), 1), weigth) # Create array with weight N times
+weight = np.array(1/len(ret.columns)) # Calculate 1/N weights
+weight_array = np.full((len(ret.columns), 1), weight) # Create array with weight N times
 
 min_func_sharpe(weight_array)
 -port_ret(weight_array, ret.mean()) / port_vol(weight_array, ret.cov())
@@ -334,7 +335,7 @@ port_ret(weight_array, ret.mean())
 
 # Portfolio return, Portfolio volatility, and Sharpe ratio
 def port_ret(weight, retmean):
-    return np.sum(retmean * weigth.T) * 126
+    return np.sum(retmean * weight.T) * 126
 
 def port_vol(weight, retcov):
     p_var = np.dot(weight,
@@ -342,11 +343,12 @@ def port_vol(weight, retcov):
                        weight.T,
                        retcov
                    ))
-    vals = []
-    for arr in p_var:
-        np.nan_to_num(arr, copy=True, nan=0, posinf=None, neginf=None)
-        vals.append(sum(arr))
-    return np.sqrt(sum(vals))
+    p_var = np.sqrt(p_var)
+    #vals = []
+    #for arr in p_var:
+    #    np.nan_to_num(arr, copy=True, nan=0, posinf=None, neginf=None)
+    #    vals.append(sum(arr))
+    return(p_var)
 
 # Add to array (for ex2 c and ex2 d)
 results["portfolio_return"].append(port_ret(weight_array, ret.mean()))
