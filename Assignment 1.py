@@ -156,8 +156,8 @@ print('Sharpe Ratio for portfolio : ' + str(results["sharpe_ratio"]))
 print("The expected portfolio return shows how much investors have gained/lossed by investing in this portfolio. The volatility show how risky the portfolio is. The Sharpe ratio is the measure of risk-adjusted return of a financial portfolio")
 
 #%% Exercise 2.2.c
-#for i in range(1,10000):
-for i in range(1,5):
+for i in range(1,10000):
+#for i in range(1,5):
     results["i"].append(i)
     # Set inital data
     pd_data = new_data[['date', 'name', 'close']]  # Filter to date, name and close
