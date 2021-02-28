@@ -126,26 +126,18 @@ weight_array = np.full((len(ret.columns), 1), weight) # Create array with weight
 def port_ret(weight, retmean):
     return np.sum(retmean * weight) * 126
 
-def port_vol(weight, retcov):
+def port_vol(weight):
     p_var = np.dot(
                weight.T,
-               retcov * 126
+               ret.cov() * 126
            )
-    #p_var = np.dot(
-    #           weight_array.T,
-    #           ret.cov() * 126
-    #       )
     p_var = np.sqrt(p_var)
     p_var[np.isnan(p_var)] = 0
-    #p_var = np.array(p_var)
-    #vals = []
-    #for arr in p_var:
-    #    vals.append(sum(arr))
     return(p_var)
 
 # Add to array (for ex2 c and ex2 d)
 results["portfolio_return"].append(port_ret(weight, ret.mean()))
-results["portfolio_volatility"].append(np.sum(port_vol(weight_array, ret.cov())))
+results["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
 
 # Sharpe ratio (for holding period)
 Sharpe_Ratio = ret.mean()/ret.std()
@@ -205,7 +197,7 @@ for i in range(1,5):
         results["portfolio_return"].append(port_ret(weight, ret.mean()))
 
         # Portfolio volatility (for holding period)
-        results["portfolio_volatility"].append(np.sum(port_vol(weight_array, ret.cov())))
+        results["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
 
         # Sharpe ratio (for holding period)
         Sharpe_Ratio = ret.mean() / ret.std()
@@ -286,12 +278,12 @@ results["sharpe_ratio"].append(sum(Holding_SR))
 weight = np.array(1/len(ret.columns)) # Calculate 1/N weights
 weight_array = np.full((len(ret.columns), 1), weight) # Create array with weight N times
 
-def min_func_sharpe(weight, retmean, weight_array, retcov):
-    min_sharpe = -port_ret(weight, retmean) / np.sum(port_vol(weight_array, retcov))
+def min_func_sharpe(weight, retmean, weight_array):
+    min_sharpe = -port_ret(weight, retmean) / np.sum(port_vol(weight_array))
     return(min_sharpe)
 
 def min_func_sharpe(weight):
-    min_sharpe = -port_ret(weight, ret.mean()) / np.sum(port_vol(weight_array, ret.cov()))
+    min_sharpe = -port_ret(weight, ret.mean()) / np.sum(port_vol(weight_array))
     return(min_sharpe)
 
 #test = min_func_sharpe(weight, ret.mean(), weight_array, ret.cov())
