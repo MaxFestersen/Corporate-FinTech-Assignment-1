@@ -278,7 +278,7 @@ ret = ret.dropna(axis=1, how='all').dropna(axis=0, how='all')  # Handling missin
 for item in random_top_curr:
     if(item not in ret.columns):
         print(item + " removed because it was empty for holding period.")
-
+        random_top_curr = np.delete(random_top_curr, np.where(random_top_curr == item))
 if (len(ret.columns) < weight_random_top_curr):
     print("N is now: " + str(len(ret.columns)))
 
@@ -286,38 +286,40 @@ if (len(ret.columns) < weight_random_top_curr):
 results_2_3["N"].append(len(ret.columns)) # Append Number of columns to results dictionary
 
 # Sharpe ratio (for holding period)
-Sharpe_Ratio = ret.mean()/ret.std() # Calculate sharpe ratio for each currency
-Holding_SR = (126**0.5) * Sharpe_Ratio # Account for holding period
+#Sharpe_Ratio = ret.mean()/ret.std() # Calculate sharpe ratio for each currency
+#Holding_SR = (126**0.5) * Sharpe_Ratio # Account for holding period
 
-weight = np.array(1/len(ret.columns)) # Calculate 1/N weights
-weight_array = np.full((len(ret.columns), 1), weight)  # Create array with weight N times
+#weight = np.array(1/len(ret.columns)) # Calculate 1/N weights
+#weight_array = np.full((len(ret.columns), 1), weight)  # Create array with weight N times
 
 
-def min_func_sharpe(weight_array):
-    min_sharpe = -port_ret(weight_array) / np.sum(port_vol(weight_array))
-    return(min_sharpe)
+#def min_func_sharpe(weight_array):
+#    min_sharpe = -port_ret(weight_array) / np.sum(port_vol(weight_array))
+#    return(min_sharpe)
 
-cons = ({'type': 'eq', 'fun': lambda x:  np.sum(x) - 1})
-bnds = tuple((0, 1) for x in range(len(ret.columns)))
+#cons = ({'type': 'eq', 'fun': lambda x:  np.sum(x) - 1})
+#bnds = tuple((0, 1) for x in range(len(ret.columns)))
 
-opts = sco.minimize(min_func_sharpe, weight, method='SLSQP', bounds=bnds, constraints=cons)
-weight_array = opts["x"].T
+#opts = sco.minimize(min_func_sharpe, weight, method='SLSQP', bounds=bnds, constraints=cons)
+#weight_array = opts["x"].T
 
 # Portfolio return, Portfolio volatility, and Sharpe ratio
 # Add to array (for ex2.3 c and ex2.3 d)
-results_2_3["portfolio_return"].append(port_ret(weight_array))
-results_2_3["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
-results_2_3["sharpe_ratio"].append(port_ret(weight_array)/np.sum(port_vol(weight_array)))
+#results_2_3["portfolio_return"].append(port_ret(weight_array))
+#results_2_3["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
+#results_2_3["sharpe_ratio"].append(port_ret(weight_array)/np.sum(port_vol(weight_array)))
 
 #%% How the theory should have worked!
 ex3_data = new_data[['date', 'name', 'close']] # Filter to date, name and close
 
-df = ex3_data.pivot_table(index='date', columns='name', values='close')  # Set names as columns, close as values with date as index
-symbols = ['ARbit', 'Acoin', 'Alphabit', 'BitBar', 'Bitcoin'] # Manually choose 5 different stocks
-df = df[symbols] # Make them into a DataFrame
+#df = ex3_data.pivot_table(index='date', columns='name', values='close')  # Set names as columns, close as values with date as index
+#symbols = ['ARbit', 'Acoin', 'Alphabit', 'BitBar', 'Bitcoin'] # Manually choose 5 different stocks
+#df = df[symbols] # Make them into a DataFrame
+symbols  = random_top_curr.T.tolist()
+df = ret
 
 returns = df.pct_change() # Create the procentage returns for the stocks
-cov_matrix_annual = returns.cov() * 252 # Calculate the annual covariance-matrix
+cov_matrix_annual = returns.cov() * 126 # Calculate the annual covariance-matrix
 
 weight_3 = len(symbols) # Number of stocks
 weight_3_v = 1/len(symbols) # The weight pr. stock
