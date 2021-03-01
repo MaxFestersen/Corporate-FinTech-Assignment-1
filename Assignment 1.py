@@ -74,7 +74,7 @@ new_data_median_sorted = new_data_1.groupby("name").agg({"volume": ["median"]}).
 crypto_curr = new_data_median_sorted.head(50) # Get 50 first results - the top 50 because of sorting
 print(crypto_curr) # Print results
 # 2017-06-01 - 2018-01-01 (Close values)
-print("PlaceholderText")
+print("Above the 50 most lucrative currensies are printed with their median volume. The currensies are the ones that will be used as posible currensies for the random choises bellow.")
 
 
 #%% Exercise 2.2
@@ -226,12 +226,17 @@ for i in range(1,10000):
         Holding_SR = (126 ** 0.5) * sum(Sharpe_Ratio)
         results["sharpe_ratio"].append(Holding_SR)
 
-print("The code ran 10000 times.")
+print("The code ran 10000 times. See models bellow.")
+
+
 #%% Excersice 2.2.d
 ex2 = plt.scatter(results["N"], results["portfolio_volatility"])
 #ex2_return = plt.scatter(results["N"], results["portfolio_return"])
+#ex2.suptitle('The average portfolio volatility against the number of cryptos N', fontsize=20)
+plt.xlabel('N')
+plt.ylabel('Volatility')
 plt.show()
-print("PlaceholderText")
+print("It seems there is a correlation between volatility and amount of currensies, N. Gennerally it seems the volatily is higher with more currensies, with its peak being around 37 N.")
 
 #%% Excersice 2.3
 #%% Excersice 2.3.a
