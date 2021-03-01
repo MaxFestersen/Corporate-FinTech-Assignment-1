@@ -228,6 +228,23 @@ for i in range(1,10000):
         results["sharpe_ratio"].append(Holding_SR)
 
 print("The code ran 10000 times. See models bellow.")
+print('Plot over return')
+ex2_ret = plt.scatter(results["N"], results["portfolio_return"])
+plt.xlabel('N')
+plt.ylabel('Return')
+plt.show()
+
+print('Plot over Sharpe Ratio')
+ex2_ret = plt.scatter(results["N"], results["sharpe_ratio"])
+plt.xlabel('N')
+plt.ylabel('Sharpe Ratio')
+plt.show()
+
+print('Plot over Volatility')
+ex2_ret = plt.scatter(results["N"], results["portfolio_volatility"])
+plt.xlabel('N')
+plt.ylabel('Volatility')
+plt.show()
 
 
 #%% Excersice 2.2.d
