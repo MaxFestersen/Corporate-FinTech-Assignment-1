@@ -6,7 +6,7 @@ import pandas as pd
 #import scipy.stats as scs
 # from pylab import mpl, plt
 import random
-from matplotlib.pylab import mpl, plt
+from matplotlib.pylab import plt#, mpl
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import scipy.optimize as sco
