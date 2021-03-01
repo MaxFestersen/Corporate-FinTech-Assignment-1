@@ -14,6 +14,7 @@ import warnings
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt import risk_models
 from pypfopt import expected_returns
+import webbrowser # Skal kun bruges til at vise hjemmeside til opgave 3
 
 #%% Name and e-mail
 print('Mads Duelund Dorka, mador17@student.sdu.dk')
@@ -23,13 +24,13 @@ print('Daniel Lindberg, dlind16@student.sdu.dk')
 print('Emilie Bruun Therp, emthe15@student.sdu.dk')
 
 #%% Jupiter settings
-warnings.filterwarnings('ignore')
+#warnings.filterwarnings('ignore') # did not work in jupiter
 
 #%% Design
 plt.style.use('fivethirtyeight')
 
 #%% Read data into code
-data = pd.read_csv('crypto-markets.csv')
+data = pd.read_csv('https://www.maxfest.dk/sdu/crypto-markets.csv')
 #data.describe()
 
 new_data = data.loc[data['date'] > '2017 - 01 - 01'] # Sorterer dato, så datoer før 01-01-2017 ikke bruges :D
@@ -37,7 +38,7 @@ new_data = data.loc[data['date'] > '2017 - 01 - 01'] # Sorterer dato, så datoer
 
 
 #%% Exercise 1
-print("PlaceholderText")
+webbrowser.open('https://www.maxfest.dk/sdu/ex1.pdf')  # Go to example.com
 
 #%% Exercise 2
 
