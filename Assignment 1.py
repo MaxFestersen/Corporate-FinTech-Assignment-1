@@ -162,7 +162,6 @@ print("The expected portfolio return shows how much investors have gained/lossed
 
 #%% Exercise 2.2.c
 for i in range(1,10000):
-#for i in range(1,5):
     results["i"].append(i)
     # Set inital data
     pd_data = new_data[['date', 'name', 'close']]  # Filter to date, name and close
@@ -378,9 +377,6 @@ for i in range(1,5):
     random_top_curr = crypto_curr.index.values  # top 50 curencies - from 2.1
     for n in range(random.randint(0, 49)):  # Randomly run from 0 to 49 times (so at least 1 value is left)
         random_top_curr = np.delete(random_top_curr, random.randint(0, len(random_top_curr) - 1), 0)  # remove a random value
-
-    weight_random_top_curr = len(random_top_curr)  # Amount of currencsies
-
     # Filter the days
     is_dates = pd_data['date'] >= unique_day  # create filtering list from random date
     pd_data = pd_data[is_dates]  # Filter by the random date and after
@@ -399,6 +395,11 @@ for i in range(1,5):
         curr[np.isnan(values)] = 0 # Set to 0
         if sum(curr) == 0:
             ret = ret.drop(columns=[name])
+
+    for item in random_top_curr:
+        if (item not in ret.columns):
+            random_top_curr = np.delete(random_top_curr, np.where(random_top_curr == item))
+    weight_random_top_curr = len(random_top_curr)  # Amount of currencsies
 
     if len(ret.columns) >= 4: # if there are no columns set vals as NaN
         results_2_3["i"].append(i)  # First result is created outside of loop
