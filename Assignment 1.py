@@ -358,6 +358,10 @@ print()
 print('Hence we see that the weights have changes, and we chould invest almost all of our money into Bitcoin. In order to implement this to our, we needed to include the random choose of N and the random date, and then create a loop in order to do this 10,000 times.')
 print("The loop for Excersice 2.3.c did not work, thus 2.3.c-d and 2.4 could not be done. We used the example from the lectures as a base. During our handling of invalid data, and reformating to run the code, somehow it lost the ability to run.")
 
+#results_2_3["portfolio_return"].append(port_ret(weight_array))
+#results_2_3["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
+#results_2_3["sharpe_ratio"].append(port_ret(weight_array)/np.sum(port_vol(weight_array)))
+
 #%% Excersice 2.3.c
 #for i in range(1,10000):
 for i in range(1,5):
