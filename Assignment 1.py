@@ -435,5 +435,6 @@ for i in range(1,10000):
 #fig.suptitle('Comparing results from 2. and 3.')
 #ex4[0].ex2
 #ex4[1].ex3
+print('As we were not able to get our program to run the part with Sharpe ratio maximizing weights, we are not really able to compare the results. However, based on the theory from the article, we would expect the 1/N model to outperform the Sharpe maximizing model. The values we obtain are different from what would normally be expected as the values of cryptocurrency have exploded lately.')
 
 print("The end")
