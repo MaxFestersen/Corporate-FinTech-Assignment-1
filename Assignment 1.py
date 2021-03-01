@@ -10,6 +10,7 @@ from matplotlib.pylab import plt#, mpl
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import scipy.optimize as sco
+import warnings
 
 #%% Name and e-mail
 print('Mads Duelund Dorka, mador17@student.sdu.dk')
@@ -17,6 +18,10 @@ print('Max Festersen Hansen, maxfh20@student.sdu.dk')
 print('Mathias Eriksen, merik17@student.sdu.dk')
 print('Daniel Lindberg, dlind16@student.sdu.dk')
 print('Emilie Bruun Therp, emthe15@student.sdu.dk')
+
+#%% Jupiter settings
+warnings.filterwarnings('ignore')
+
 #%% Design
 plt.style.use('fivethirtyeight')
 
