@@ -11,6 +11,9 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import scipy.optimize as sco
 import warnings
+from pypfopt.efficient_frontier import EfficientFrontier
+from pypfopt import risk_models
+from pypfopt import expected_returns
 
 #%% Name and e-mail
 print('Mads Duelund Dorka, mador17@student.sdu.dk')
@@ -341,10 +344,6 @@ print("Expected annual return : "+ percent_ret)
 print('Annual volatility/standard deviation/risk : '+percent_vols)
 print('Annual variance : '+percent_var)
 results_2_3["portfolio_volatility"].append(percent_vols)
-
-from pypfopt.efficient_frontier import EfficientFrontier
-from pypfopt import risk_models
-from pypfopt import expected_returns
 
 mu = expected_returns.mean_historical_return(df)#returns.mean() * 252
 S = risk_models.sample_cov(df) #Get the sample covariance matrix
