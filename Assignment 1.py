@@ -362,8 +362,8 @@ print("The loop for Excersice 2.3.c did not work, thus 2.3.c-d and 2.4 could not
 #results_2_3["portfolio_return"].append(port_ret(weight_array))
 
 #%% Excersice 2.3.c
-#for i in range(1,10000):
-for i in range(1,5):
+for i in range(1,10000):
+#for i in range(1,5):
     # Set inital data
     pd_data = new_data[['date', 'name', 'close']]  # Filter to date, name and close
 
@@ -401,30 +401,30 @@ for i in range(1,5):
             random_top_curr = np.delete(random_top_curr, np.where(random_top_curr == item))
     weight_random_top_curr = len(random_top_curr)  # Amount of currencsies
 
-    if len(ret.columns) >= 4: # if there are no columns set vals as NaN
-        results_2_3["i"].append(i)  # First result is created outside of loop
-        results_2_3["N"].append(len(ret.columns))  # Append Number of columns to results dictionary
+    #if len(ret.columns) >= 4: # if there are no columns set vals as NaN
+    #    results_2_3["i"].append(i)  # First result is created outside of loop
+    #    results_2_3["N"].append(len(ret.columns))  # Append Number of columns to results dictionary
 
         # Sharpe ratio (for holding period)
-        Sharpe_Ratio = ret.mean() / ret.std()  # Calculate sharpe ratio for each currency
+    #    Sharpe_Ratio = ret.mean() / ret.std()  # Calculate sharpe ratio for each currency
         #Holding_SR = (126 ** 0.5) * Sharpe_Ratio  # Account for holding period
 
-        sum(Sharpe_Ratio/sum(Sharpe_Ratio))
+    #    sum(Sharpe_Ratio/sum(Sharpe_Ratio))
 
-        weight = np.array(1 / len(ret.columns))  # Calculate 1/N weights
-        weight_array = np.full((len(ret.columns), 1), weight)  # Create array with weight N times
+    #    weight = np.array(1 / len(ret.columns))  # Calculate 1/N weights
+    #    weight_array = np.full((len(ret.columns), 1), weight)  # Create array with weight N times
 
-        opts = sco.minimize(min_func_sharpe, weight_array, method='SLSQP', bounds=bnds, constraints=cons)
-        weight_array = opts["x"].T
+        #opts = sco.minimize(min_func_sharpe, weight_array, method='SLSQP', bounds=bnds, constraints=cons)
+        #weight_array = opts["x"].T
 
         # Portfolio return, Portfolio volatility, and Sharpe ratio
         # Add to array (for ex2.3 c and ex2.3 d)
-        results_2_3["portfolio_return"].append(port_ret(weight_array))
-        results_2_3["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
-        results_2_3["sharpe_ratio"].append(port_ret(weight_array) / np.sum(port_vol(weight_array)))
-    else:
-        i = i-1
-        continue
+        #results_2_3["portfolio_return"].append(port_ret(weight_array))
+        #results_2_3["portfolio_volatility"].append(np.sum(port_vol(weight_array)))
+        #results_2_3["sharpe_ratio"].append(port_ret(weight_array) / np.sum(port_vol(weight_array)))
+    #else:
+    #    i = i-1
+    #    continue
 
 #%% Excersice 2.3.d
 #ex3 = plt.plot(results_2_3["N"], results_2_3["portfolio_volatility"]) # En af jer må lige afprøve. Kan ikke selv få plots til at køre i pycharm. Mvh. Max.
